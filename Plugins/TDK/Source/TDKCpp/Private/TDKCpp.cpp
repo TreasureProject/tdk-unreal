@@ -1,25 +1,25 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-#include "TDK.h"
+#include "TDKCpp.h"
 
-#define LOCTEXT_NAMESPACE "FTDKModule"
+#define LOCTEXT_NAMESPACE "FTDKCppModule"
 
-DEFINE_LOG_CATEGORY(LogTDK);
+DEFINE_LOG_CATEGORY(LogTDKCpp);
 
-class FTDKModule : public ITDKModuleInterface
+class FTDKCppModule : public ITDKCppModuleInterface
 {
 	/** IModuleInterface implementation */
 	virtual void StartupModule() override;
 	virtual void ShutdownModule() override;
 };
 
-void FTDKModule::StartupModule()
+void FTDKCppModule::StartupModule()
 {
 	// This code will execute after your module is loaded into memory; the exact timing is specified in the .uplugin file per-module
     
 }
 
-void FTDKModule::ShutdownModule()
+void FTDKCppModule::ShutdownModule()
 {
 	// This function may be called during shutdown to clean up your module.  For modules that support dynamic reloading,
 	// we call this function before unloading the module.
@@ -28,4 +28,4 @@ void FTDKModule::ShutdownModule()
 
 #undef LOCTEXT_NAMESPACE
 	
-IMPLEMENT_MODULE(FTDKModule, TDK)
+IMPLEMENT_MODULE(FTDKCppModule, TDKCpp)
