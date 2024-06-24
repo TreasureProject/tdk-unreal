@@ -16,7 +16,17 @@
 	"Installed": false,
 	"Modules": [
 		{
+			"Name": "TDKCpp",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
 			"Name": "TDK",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "TDKCommon",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
 		}

@@ -5,9 +5,9 @@
 #include "CoreMinimal.h"
 #include "Modules/ModuleManager.h"
 
-DECLARE_LOG_CATEGORY_EXTERN(LogTDK, Log, All);
+DECLARE_LOG_CATEGORY_EXTERN(LogTDKCommon, Log, All);
 
-class ITDKModuleInterface : public IModuleInterface
+class ITDKCommonModuleInterface : public IModuleInterface
 {
 public:
 
@@ -17,13 +17,13 @@ public:
     *
     * @return Returns singleton instance, loading the module on demand if needed
     */
-    static inline ITDKModuleInterface& Get()
+    static inline ITDKCommonModuleInterface& Get()
     {
         if (IsAvailable())
         {
-            return FModuleManager::GetModuleChecked<ITDKModuleInterface>("TDK");
+            return FModuleManager::GetModuleChecked<ITDKCommonModuleInterface>("TDKCommon");
         }
-        return FModuleManager::LoadModuleChecked<ITDKModuleInterface>("TDK");
+        return FModuleManager::LoadModuleChecked<ITDKCommonModuleInterface>("TDKCommon");
     }
 
     /**
@@ -33,6 +33,6 @@ public:
     */
     static inline bool IsAvailable()
     {
-        return FModuleManager::Get().IsModuleLoaded("TDK");
+        return FModuleManager::Get().IsModuleLoaded("TDKCommon");
     }
 };
