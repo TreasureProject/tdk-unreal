@@ -1,0 +1,24 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "TDK Plugin",
+	"Description": "TDK Plugin for Unreal Engine",
+	"Category": "Other",
+	"CreatedBy": "Treasure",
+	"CreatedByURL": "https://treasure.mintlify.app/",
+	"DocsURL": "https://treasure.mintlify.app/tdk/introduction",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "TDK",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	]
+}
