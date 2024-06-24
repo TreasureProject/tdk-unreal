@@ -9,6 +9,14 @@
 /**
  * 
  */
+
+UENUM(BlueprintType)
+enum EEnv
+{
+	DEV	= 0		UMETA(DisplayName = "Development"),
+	PROD = 1	UMETA(DisplayName = "Production"),
+};
+
 UCLASS(config = Engine, defaultconfig)
 class TDKCOMMON_API UTDKRuntimeSettings : public UObject
 {
@@ -17,5 +25,15 @@ class TDKCOMMON_API UTDKRuntimeSettings : public UObject
 public:
 	UTDKRuntimeSettings();
 	
-	
+	UPROPERTY(EditAnywhere, config, Category = TDK)
+	FString DevAnalyticsApiUrl;
+
+	UPROPERTY(EditAnywhere, config, Category = TDK)
+	FString ProdAnalyticsApiUrl;
+
+	UPROPERTY(EditAnywhere, config, Category = ThirdWeb)
+	FString DevClientId;
+
+	UPROPERTY(EditAnywhere, config, Category = ThirdWeb)
+	FString ProdClientId;
 };
