@@ -42,12 +42,12 @@ namespace TDK
     struct TDKCPP_API FTDKCppBaseModel
     {
         virtual ~FTDKCppBaseModel() {}
-        virtual void writeJSON(JsonWriter& Json) const = 0;
-        virtual bool readFromValue(const TSharedPtr<FJsonObject>& obj) = 0;
-        virtual bool readFromValue(const TSharedPtr<FJsonValue>& value) { return false; };
+        virtual void WriteJSON(JsonWriter& Json) const = 0;
+        virtual bool ReadFromValue(const TSharedPtr<FJsonObject>& obj) = 0;
+        virtual bool ReadFromValue(const TSharedPtr<FJsonValue>& value) { return false; };
 
         FString toJSONString() const;
     };
 
-
+    void WriteMap(JsonWriter& Writer, FString Identifier, FJsonSerializableKeyValueMap Map);
 }

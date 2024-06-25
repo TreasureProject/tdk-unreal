@@ -4,6 +4,7 @@
 #include "TDKRuntimeSettings.h"
 
 UTDKRuntimeSettings::UTDKRuntimeSettings() :
+	CartridgeTag(TEXT("")),
 	DevAnalyticsApiUrl(TEXT("https://darkmatter-dev.treasure.lol/ingress")),
 	ProdAnalyticsApiUrl(TEXT("https://darkmatter.treasure.lol/ingress"))
 {

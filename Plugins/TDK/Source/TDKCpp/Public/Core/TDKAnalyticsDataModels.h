@@ -15,17 +15,60 @@ namespace TDK
 	{
 		struct TDKCPP_API FTrackCustomRequest : public TDK::FTDKCppBaseModel
 		{
-            FTrackCustomRequest(const FTrackCustomRequest& src) = default;
+            FString SmartAccountAddress;
 
-            FTrackCustomRequest(const TSharedPtr<FJsonObject>& obj) : FTrackCustomRequest()
+            int32 ChainId;
+
+            FString CartridgeTag;
+
+            FString EventName;
+
+            FString SessionId;
+
+            FString EventId;
+
+            FString TDKVersion;
+
+            FString TdkFlavour;
+
+            FString EventTimeLocal;
+
+            FString EventTimeServer;
+
+            TMap<FString, FString> EventProps;
+
+            TMap<FString, FString> DeviceInfo;
+
+            TMap<FString, FString> AppInfo;
+
+            FTrackCustomRequest() :
+                FTDKCppBaseModel(),
+                SmartAccountAddress(),
+                ChainId(),
+                CartridgeTag(),
+                EventName(),
+                SessionId(),
+                EventId(),
+                TDKVersion(),
+                TdkFlavour(),
+                EventTimeLocal(),
+                EventTimeServer(),
+                EventProps(),
+                DeviceInfo(),
+                AppInfo()
+            {}
+
+            FTrackCustomRequest(const FTrackCustomRequest& Src) = default;
+
+            FTrackCustomRequest(const TSharedPtr<FJsonObject>& Obj) : FTrackCustomRequest()
             {
-                readFromValue(obj);
+                ReadFromValue(Obj);
             }
 
             ~FTrackCustomRequest();
 
-			void writeJSON(JsonWriter& writer) const override;
-			bool readFromValue(const TSharedPtr<FJsonObject>& obj) override;
+			void WriteJSON(JsonWriter& Writer) const override;
+			bool ReadFromValue(const TSharedPtr<FJsonObject>& Obj) override;
 		};
 	}
 }
