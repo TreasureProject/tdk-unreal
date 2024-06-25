@@ -4,8 +4,24 @@
 
 #include "CoreMinimal.h"
 #include "Modules/ModuleManager.h"
+#include "UObject/StrongObjectPtr.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTDKCpp, Log, All);
+
+// forward declaration of classes
+namespace TDK
+{
+    template<typename T>
+    TSharedPtr<T> MakeSharedUObject()
+    {
+        TSharedRef< TStrongObjectPtr<T> > SharedRefToStrongObjPtr = MakeShared< TStrongObjectPtr<T> >(NewObject<T>());
+        return TSharedPtr<T>(SharedRefToStrongObjPtr, SharedRefToStrongObjPtr->Get());
+    }
+
+    class UTDKAnalyticsAPI;
+}
+
+typedef TSharedPtr<class TDK::UTDKAnalyticsAPI> TDKAnalyticsPtr;
 
 class ITDKCppModuleInterface : public IModuleInterface
 {
@@ -35,4 +51,6 @@ public:
     {
         return FModuleManager::Get().IsModuleLoaded("TDKCpp");
     }
+
+    virtual TDKAnalyticsPtr GetAnalyticsAPI() const = 0;
 };
