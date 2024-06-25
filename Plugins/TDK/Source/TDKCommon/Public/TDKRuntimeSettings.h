@@ -24,6 +24,10 @@ class TDKCOMMON_API UTDKRuntimeSettings : public UObject
 
 public:
 	UTDKRuntimeSettings();
+
+	// TDK Config
+	UPROPERTY(EditAnywhere, config, Category = TDK)
+	FString CartridgeTag;
 	
 	UPROPERTY(EditAnywhere, config, Category = TDK)
 	FString DevAnalyticsApiUrl;
@@ -31,6 +35,7 @@ public:
 	UPROPERTY(EditAnywhere, config, Category = TDK)
 	FString ProdAnalyticsApiUrl;
 
+	// Third-Web Config
 	UPROPERTY(EditAnywhere, config, Category = ThirdWeb)
 	FString DevClientId;
 
