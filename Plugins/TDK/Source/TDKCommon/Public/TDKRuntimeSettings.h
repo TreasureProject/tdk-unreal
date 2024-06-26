@@ -41,4 +41,7 @@ public:
 
 	UPROPERTY(EditAnywhere, config, Category = ThirdWeb)
 	FString ProdClientId;
+
+public:
+	FString GetAnalyticsApiUrl() const;
 };

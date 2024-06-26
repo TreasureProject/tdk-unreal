@@ -13,7 +13,35 @@ namespace TDK
 {
 	namespace AnalyticsModels
 	{
-		struct TDKCPP_API FTrackCustomRequest : public TDK::FTDKCppBaseModel
+        struct FDeviceInfo
+        {
+            FString DeviceName;
+
+            FString DeviceModel;
+
+            int DeviceType;
+
+            FString DeviceUniqueId;
+
+            FString DeviceOS;
+
+            int DeviceOSFamily;
+
+            FString DeviceCPU;
+        };
+
+        struct FAppInfo
+        {
+            FString AppId;
+
+            bool AppIsEditor;
+
+            FString AppVersion;
+
+            int AppEnvironment;
+        };
+        
+        struct TDKCPP_API FTrackCustomRequest : public TDK::FTDKCppBaseModel
 		{
             FString SmartAccountAddress;
 
@@ -37,9 +65,9 @@ namespace TDK
 
             TMap<FString, FString> EventProps;
 
-            TMap<FString, FString> DeviceInfo;
+            FDeviceInfo DeviceInfo;
 
-            TMap<FString, FString> AppInfo;
+            FAppInfo AppInfo;
 
             FTrackCustomRequest() :
                 FTDKCppBaseModel(),

@@ -31,17 +31,14 @@ namespace TDK
 		// APIs
 		bool SendEvent(TDK::AnalyticsModels::FTrackCustomRequest Request);
 
+	protected:
+		void BuildDeviceInfo();
 		
+		void BuildAppInfo();
 
 	protected:
-		TMap<FString, FString> BuildBaseEvent(FString EventName, TMap<FString, FString> EventProps)
-		{
-			return TMap<FString, FString>();
-		}
-
-	protected:
-		TMap<FString, FString> DeviceInfo;
-		TMap<FString, FString> AppInfo;
+		TDK::AnalyticsModels::FDeviceInfo DeviceInfo;
+		TDK::AnalyticsModels::FAppInfo AppInfo;
 
 		FString SessionId;
 		FString SmartAccountAddress;
