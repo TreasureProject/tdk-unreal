@@ -6,16 +6,17 @@
 #include "TDKAnalyticsConstants.h"
 #include "TDKAnalyticsAPI.h"
 
-TDK::AnalyticsModels::FTrackCustomRequest::~FTrackCustomRequest()
+using namespace TDK;
+using namespace AnalyticsModels;
+
+FTrackCustomRequest::~FTrackCustomRequest()
 {
     //if (InfoRequestParameters != nullptr) delete InfoRequestParameters;
 
 }
 
-void TDK::AnalyticsModels::FTrackCustomRequest::WriteJSON(JsonWriter& Writer) const
+void FTrackCustomRequest::WriteJSON(JsonWriter& Writer) const
 {
-    TDKAnalyticsPtr AnalyticsAPI = ITDKCppModuleInterface::Get().GetAnalyticsAPI();
-
     Writer->WriteObjectStart();
 
     Writer->WriteIdentifierPrefix(TDKCommon::TDKAnalyticsConstants::PROP_SMART_ACCOUNT);
@@ -96,7 +97,7 @@ void TDK::AnalyticsModels::FTrackCustomRequest::WriteJSON(JsonWriter& Writer) co
     Writer->WriteObjectEnd();
 }
 
-bool TDK::AnalyticsModels::FTrackCustomRequest::ReadFromValue(const TSharedPtr<FJsonObject>& Obj)
+bool FTrackCustomRequest::ReadFromValue(const TSharedPtr<FJsonObject>& Obj)
 {
     bool HasSucceeded = true;
 

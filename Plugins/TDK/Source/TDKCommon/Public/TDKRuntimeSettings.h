@@ -27,6 +27,9 @@ public:
 
 	// TDK Config
 	UPROPERTY(EditAnywhere, config, Category = TDK)
+	TEnumAsByte<EEnv> Env;
+
+	UPROPERTY(EditAnywhere, config, Category = TDK)
 	FString CartridgeTag;
 	
 	UPROPERTY(EditAnywhere, config, Category = TDK)

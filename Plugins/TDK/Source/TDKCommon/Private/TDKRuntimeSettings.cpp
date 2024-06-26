@@ -5,8 +5,16 @@
 
 UTDKRuntimeSettings::UTDKRuntimeSettings() :
 	CartridgeTag(TEXT("")),
-	DevAnalyticsApiUrl(TEXT("https://darkmatter-dev.treasure.lol/ingress")),
-	ProdAnalyticsApiUrl(TEXT("https://darkmatter.treasure.lol/ingress"))
+	DevAnalyticsApiUrl(TEXT("")),
+	ProdAnalyticsApiUrl(TEXT(""))
 {
 
+}
+
+FString UTDKRuntimeSettings::GetAnalyticsApiUrl() const
+{
+	if (Env == EEnv::DEV)
+		return DevAnalyticsApiUrl;
+	else
+		return ProdAnalyticsApiUrl;
 }

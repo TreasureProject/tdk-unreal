@@ -7,12 +7,15 @@
 #include "HAL/PlatformMisc.h"
 #include "GenericPlatform/GenericPlatformMisc.h"
 
+#include "TDKCpp.h"
 #include "TDKRuntimeSettings.h"
 #include "TDKAnalyticsConstants.h"
 #include "Core/TDKRequestHandler.h"
 
+DEFINE_LOG_CATEGORY(LogTDKCpp);
+
 using namespace TDK;
-using namespace TDK::AnalyticsModels;
+using namespace AnalyticsModels;
 
 UTDKAnalyticsAPI::UTDKAnalyticsAPI() 
 {
@@ -23,7 +26,7 @@ UTDKAnalyticsAPI::UTDKAnalyticsAPI()
 
 UTDKAnalyticsAPI::~UTDKAnalyticsAPI() {}
 
-bool TDK::UTDKAnalyticsAPI::TrackCustom(FString EvtName, TMap<FString, FString> EvtProps, bool bHighPriority)
+bool UTDKAnalyticsAPI::TrackCustom(FString EvtName, TMap<FString, FString> EvtProps, bool bHighPriority)
 {
 	UTDKRuntimeSettings* Settings = GetMutableDefault<UTDKRuntimeSettings>();
 
@@ -57,6 +60,7 @@ bool TDK::UTDKAnalyticsAPI::TrackCustom(FString EvtName, TMap<FString, FString> 
 
 bool TDK::UTDKAnalyticsAPI::SendEvent(TDK::AnalyticsModels::FTrackCustomRequest Request)
 {
+	UE_LOG(LogTDKCpp, Warning, TEXT("%s"), *Request.toJSONString());
 	return false;
 }
 

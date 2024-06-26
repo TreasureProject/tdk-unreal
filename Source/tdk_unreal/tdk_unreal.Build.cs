@@ -8,7 +8,7 @@ public class tdk_unreal : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "TDK", "TDKCommon", "TDKCpp" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
