@@ -6,16 +6,17 @@
 #include "TDKAnalyticsConstants.h"
 #include "TDKAnalyticsAPI.h"
 
-TDK::AnalyticsModels::FTrackCustomRequest::~FTrackCustomRequest()
+using namespace TDK;
+using namespace AnalyticsModels;
+
+FTrackCustomRequest::~FTrackCustomRequest()
 {
     //if (InfoRequestParameters != nullptr) delete InfoRequestParameters;
 
 }
 
-void TDK::AnalyticsModels::FTrackCustomRequest::WriteJSON(JsonWriter& Writer) const
+void FTrackCustomRequest::WriteJSON(JsonWriter& Writer) const
 {
-    TDKAnalyticsPtr AnalyticsAPI = ITDKCppModuleInterface::Get().GetAnalyticsAPI();
-
     Writer->WriteObjectStart();
 
     Writer->WriteIdentifierPrefix(TDKCommon::TDKAnalyticsConstants::PROP_SMART_ACCOUNT);
@@ -50,14 +51,53 @@ void TDK::AnalyticsModels::FTrackCustomRequest::WriteJSON(JsonWriter& Writer) co
 
     WriteMap(Writer, TDKCommon::TDKAnalyticsConstants::PROP_PROPERTIES, EventProps);
 
-    WriteMap(Writer, TDKCommon::TDKAnalyticsConstants::PROP_DEVICE, DeviceInfo);
+    // Device Info
+    Writer->WriteObjectStart(TDKCommon::TDKAnalyticsConstants::PROP_DEVICE);
 
-    WriteMap(Writer, TDKCommon::TDKAnalyticsConstants::PROP_APP, AppInfo);
+    Writer->WriteIdentifierPrefix(TDKCommon::TDKAnalyticsConstants::PROP_DEVICE_NAME);
+    Writer->WriteValue(DeviceInfo.DeviceName);
+
+    Writer->WriteIdentifierPrefix(TDKCommon::TDKAnalyticsConstants::PROP_DEVICE_MODEL);
+    Writer->WriteValue(DeviceInfo.DeviceModel);
+
+    Writer->WriteIdentifierPrefix(TDKCommon::TDKAnalyticsConstants::PROP_DEVICE_TYPE);
+    Writer->WriteValue(DeviceInfo.DeviceType);
+
+    Writer->WriteIdentifierPrefix(TDKCommon::TDKAnalyticsConstants::PROP_DEVICE_UNIQUE_ID);
+    Writer->WriteValue(DeviceInfo.DeviceUniqueId);
+
+    Writer->WriteIdentifierPrefix(TDKCommon::TDKAnalyticsConstants::PROP_DEVICE_OS);
+    Writer->WriteValue(DeviceInfo.DeviceOS);
+
+    Writer->WriteIdentifierPrefix(TDKCommon::TDKAnalyticsConstants::PROP_DEVICE_OS_FAMILY);
+    Writer->WriteValue(DeviceInfo.DeviceOSFamily);
+
+    Writer->WriteIdentifierPrefix(TDKCommon::TDKAnalyticsConstants::PROP_DEVICE_CPU);
+    Writer->WriteValue(DeviceInfo.DeviceCPU);
+
+    Writer->WriteObjectEnd();
+
+    // App Info
+    Writer->WriteObjectStart(TDKCommon::TDKAnalyticsConstants::PROP_APP);
+
+    Writer->WriteIdentifierPrefix(TDKCommon::TDKAnalyticsConstants::PROP_APP_IDENTIFIER);
+    Writer->WriteValue(AppInfo.AppId);
+
+    Writer->WriteIdentifierPrefix(TDKCommon::TDKAnalyticsConstants::PROP_APP_IS_EDITOR);
+    Writer->WriteValue(AppInfo.AppIsEditor);
+
+    Writer->WriteIdentifierPrefix(TDKCommon::TDKAnalyticsConstants::PROP_APP_VERSION);
+    Writer->WriteValue(AppInfo.AppVersion);
+
+    Writer->WriteIdentifierPrefix(TDKCommon::TDKAnalyticsConstants::PROP_APP_ENVIRONMENT);
+    Writer->WriteValue(AppInfo.AppEnvironment);
+
+    Writer->WriteObjectEnd();
 
     Writer->WriteObjectEnd();
 }
 
-bool TDK::AnalyticsModels::FTrackCustomRequest::ReadFromValue(const TSharedPtr<FJsonObject>& Obj)
+bool FTrackCustomRequest::ReadFromValue(const TSharedPtr<FJsonObject>& Obj)
 {
     bool HasSucceeded = true;
 
@@ -76,6 +116,25 @@ bool TDK::AnalyticsModels::FTrackCustomRequest::ReadFromValue(const TSharedPtr<F
             EventProps.Add(It.Key(), It.Value()->AsString());
         }
     }
+
+    return HasSucceeded;
+}
+
+FEmptyResponse::~FEmptyResponse()
+{
+
+}
+
+void FEmptyResponse::WriteJSON(JsonWriter& Writer) const
+{
+    Writer->WriteObjectStart();
+
+    Writer->WriteObjectEnd();
+}
+
+bool FEmptyResponse::ReadFromValue(const TSharedPtr<FJsonObject>& Obj)
+{
+    bool HasSucceeded = true;
 
     return HasSucceeded;
 }
