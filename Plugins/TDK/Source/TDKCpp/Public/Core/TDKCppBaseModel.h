@@ -49,5 +49,10 @@ namespace TDK
         FString toJSONString() const;
     };
 
+    struct TDKCPP_API FTDKCppResultCommon : FTDKCppBaseModel
+    {
+
+    };
+
     void WriteMap(JsonWriter& Writer, FString Identifier, FJsonSerializableKeyValueMap Map);
 }

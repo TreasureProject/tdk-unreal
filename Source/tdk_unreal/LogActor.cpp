@@ -23,7 +23,9 @@ void ALogActor::BeginPlay()
 	TMap<FString, FString> EventProps;
 	EventProps.Add(TEXT("step"), TEXT("0"));
 
-	AnalyticsPtr->TrackCustom(TEXT("ftue_started"), EventProps, true);
+	AnalyticsPtr->TrackCustom(TEXT("ftue_started"), EventProps, true, 
+		TDK::UTDKAnalyticsAPI::FSendEventBatchDelegate::CreateUObject(this, &ALogActor::OnSuccess),
+		TDK::FTDKErrorDelegate::CreateUObject(this, &ALogActor::OnError));
 }
 
 // Called every frame
@@ -33,3 +35,12 @@ void ALogActor::Tick(float DeltaTime)
 	 
 }
 
+void ALogActor::OnSuccess(const TDK::AnalyticsModels::FEmptyResponse& Result) const
+{
+	UE_LOG(LogTemp, Warning, TEXT("Congratulations, you made your first successful Analytics API call!"));
+}
+
+void ALogActor::OnError(const TDK::FTDKCppError& ErrorResult) const
+{
+	UE_LOG(LogTemp, Error, TEXT("Something went wrong with your first API call.\nHere's some debug information:\n%s"), *ErrorResult.GenerateErrorReport());
+}

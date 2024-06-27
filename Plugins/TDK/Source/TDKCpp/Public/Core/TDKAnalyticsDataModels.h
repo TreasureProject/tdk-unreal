@@ -16,28 +16,19 @@ namespace TDK
         struct FDeviceInfo
         {
             FString DeviceName;
-
             FString DeviceModel;
-
             int DeviceType;
-
             FString DeviceUniqueId;
-
             FString DeviceOS;
-
             int DeviceOSFamily;
-
             FString DeviceCPU;
         };
 
         struct FAppInfo
         {
             FString AppId;
-
             bool AppIsEditor;
-
             FString AppVersion;
-
             int AppEnvironment;
         };
         
@@ -98,5 +89,24 @@ namespace TDK
 			void WriteJSON(JsonWriter& Writer) const override;
 			bool ReadFromValue(const TSharedPtr<FJsonObject>& Obj) override;
 		};
+
+        struct TDKCPP_API FEmptyResponse : public TDK::FTDKCppResultCommon
+        {
+            FEmptyResponse() :
+                FTDKCppResultCommon()
+            {}
+
+            FEmptyResponse(const FEmptyResponse& src) = default;
+
+            FEmptyResponse(const TSharedPtr<FJsonObject>& obj) : FEmptyResponse()
+            {
+                ReadFromValue(obj);
+            }
+
+            ~FEmptyResponse();
+
+            void WriteJSON(JsonWriter& Writer) const override;
+            bool ReadFromValue(const TSharedPtr<FJsonObject>& Obj) override;
+        };
 	}
 }

@@ -10,9 +10,8 @@
 #include "TDKCpp.h"
 #include "TDKRuntimeSettings.h"
 #include "TDKAnalyticsConstants.h"
-#include "Core/TDKRequestHandler.h"
 
-DEFINE_LOG_CATEGORY(LogTDKCpp);
+#include "Core/TDKRequestHandler.h"
 
 using namespace TDK;
 using namespace AnalyticsModels;
@@ -26,7 +25,7 @@ UTDKAnalyticsAPI::UTDKAnalyticsAPI()
 
 UTDKAnalyticsAPI::~UTDKAnalyticsAPI() {}
 
-bool UTDKAnalyticsAPI::TrackCustom(FString EvtName, TMap<FString, FString> EvtProps, bool bHighPriority)
+bool UTDKAnalyticsAPI::TrackCustom(FString EvtName, TMap<FString, FString> EvtProps, bool bHighPriority, const FSendEventBatchDelegate& SuccessDelegate, const FTDKErrorDelegate& ErrorDelegate)
 {
 	UTDKRuntimeSettings* Settings = GetMutableDefault<UTDKRuntimeSettings>();
 
@@ -53,15 +52,45 @@ bool UTDKAnalyticsAPI::TrackCustom(FString EvtName, TMap<FString, FString> EvtPr
 	Request.DeviceInfo = DeviceInfo;
 	Request.AppInfo = AppInfo;
 
-	SendEvent(Request);
+	SendEvent(Request, SuccessDelegate, ErrorDelegate);
 
 	return false;
 }
 
-bool TDK::UTDKAnalyticsAPI::SendEvent(TDK::AnalyticsModels::FTrackCustomRequest Request)
+bool UTDKAnalyticsAPI::SendEvent(AnalyticsModels::FTrackCustomRequest Request, const FSendEventBatchDelegate& SuccessDelegate, const FTDKErrorDelegate& ErrorDelegate)
 {
 	UE_LOG(LogTDKCpp, Warning, TEXT("%s"), *Request.toJSONString());
-	return false;
+
+	return SendEventBatch(Request.toJSONString(), SuccessDelegate, ErrorDelegate);
+}
+
+bool TDK::UTDKAnalyticsAPI::SendEventBatch(FString Payload, const FSendEventBatchDelegate& SuccessDelegate, const FTDKErrorDelegate& ErrorDelegate)
+{
+	if (Payload.StartsWith(TEXT("{")))
+	{
+		Payload = TEXT("[") + Payload + TEXT("]");
+	}
+
+	FString UrlPath = GetMutableDefault<UTDKRuntimeSettings>()->GetAnalyticsApiUrl();
+	UrlPath += "/events";
+
+	auto HttpRequest = TDKRequestHandler::SendRequest(UrlPath, Payload, TEXT(""), TEXT(""));
+	HttpRequest->OnProcessRequestComplete().BindRaw(this, &UTDKAnalyticsAPI::OnSendEventBatchResult, SuccessDelegate, ErrorDelegate);
+	return HttpRequest->ProcessRequest();
+}
+
+void UTDKAnalyticsAPI::OnSendEventBatchResult(FHttpRequestPtr HttpRequest, FHttpResponsePtr HttpResponse, bool bSucceeded, FSendEventBatchDelegate SuccessDelegate, FTDKErrorDelegate ErrorDelegate)
+{
+	AnalyticsModels::FEmptyResponse outResult;
+	FTDKCppError errorResult;
+	if (TDKRequestHandler::DecodeRequest(HttpRequest, HttpResponse, bSucceeded, outResult, errorResult))
+	{
+		SuccessDelegate.ExecuteIfBound(outResult);
+	}
+	else
+	{
+		ErrorDelegate.ExecuteIfBound(errorResult);
+	}
 }
 
 void UTDKAnalyticsAPI::BuildDeviceInfo()

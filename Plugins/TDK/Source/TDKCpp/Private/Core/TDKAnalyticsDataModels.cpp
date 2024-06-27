@@ -119,3 +119,22 @@ bool FTrackCustomRequest::ReadFromValue(const TSharedPtr<FJsonObject>& Obj)
 
     return HasSucceeded;
 }
+
+FEmptyResponse::~FEmptyResponse()
+{
+
+}
+
+void FEmptyResponse::WriteJSON(JsonWriter& Writer) const
+{
+    Writer->WriteObjectStart();
+
+    Writer->WriteObjectEnd();
+}
+
+bool FEmptyResponse::ReadFromValue(const TSharedPtr<FJsonObject>& Obj)
+{
+    bool HasSucceeded = true;
+
+    return HasSucceeded;
+}
