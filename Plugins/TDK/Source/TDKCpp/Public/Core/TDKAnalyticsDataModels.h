@@ -3,7 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
 #include "TDKCppBaseModel.h"
+#include "TDKCommonUtils.h"
 
 /**
  * 
@@ -13,25 +15,6 @@ namespace TDK
 {
 	namespace AnalyticsModels
 	{
-        struct FDeviceInfo
-        {
-            FString DeviceName;
-            FString DeviceModel;
-            int DeviceType;
-            FString DeviceUniqueId;
-            FString DeviceOS;
-            int DeviceOSFamily;
-            FString DeviceCPU;
-        };
-
-        struct FAppInfo
-        {
-            FString AppId;
-            bool AppIsEditor;
-            FString AppVersion;
-            int AppEnvironment;
-        };
-        
         struct TDKCPP_API FTrackCustomRequest : public TDK::FTDKCppBaseModel
 		{
             FString SmartAccountAddress;
@@ -56,9 +39,9 @@ namespace TDK
 
             TMap<FString, FString> EventProps;
 
-            FDeviceInfo DeviceInfo;
+            TDKCommon::FDeviceInfo DeviceInfo;
 
-            FAppInfo AppInfo;
+            TDKCommon::FAppInfo AppInfo;
 
             FTrackCustomRequest() :
                 FTDKCppBaseModel(),

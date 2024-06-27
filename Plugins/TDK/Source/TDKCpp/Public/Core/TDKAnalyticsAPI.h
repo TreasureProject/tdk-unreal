@@ -40,20 +40,13 @@ namespace TDK
 		bool SendEventBatch(FString Payload, const FSendEventBatchDelegate& SuccessDelegate = FSendEventBatchDelegate(), const FTDKErrorDelegate& ErrorDelegate = FTDKErrorDelegate());
 
 	protected:
-		void BuildDeviceInfo();
-		
-		void BuildAppInfo();
-
 		void OnSendEventBatchResult(FHttpRequestPtr HttpRequest, FHttpResponsePtr HttpResponse, bool bSucceeded, FSendEventBatchDelegate SuccessDelegate, FTDKErrorDelegate ErrorDelegate);
 
 
 	protected:
-		TDK::AnalyticsModels::FDeviceInfo DeviceInfo;
-		TDK::AnalyticsModels::FAppInfo AppInfo;
-
 		FString SessionId;
 		FString SmartAccountAddress;
-		int32 ChainId = -1;
+		int32 ChainId;
 	};
 }
 
