@@ -36,6 +36,12 @@ namespace TDKCommon
 		static FDeviceInfo BuildDeviceInfo();
 		static FAppInfo BuildAppInfo();
 		static FString GetDeviceModel();
+
+        static FString GetPluginVersion();
+        static FString GetPluginName();
+
+    protected:
+        static FString GetPluginProperty(FString PropertyName);
 	};
 }
 

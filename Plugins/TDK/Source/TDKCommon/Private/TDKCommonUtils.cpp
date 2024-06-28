@@ -132,3 +132,37 @@ FString TDKCommonUtils::GetDeviceModel()
 
 	return DeviceModel;
 }
+
+FString TDKCommonUtils::GetPluginVersion()
+{
+	return TDKCommonUtils::GetPluginProperty(TEXT("VersionName"));
+}
+
+FString TDKCommonUtils::GetPluginName()
+{
+	return TDKCommonUtils::GetPluginProperty(TEXT("FriendlyName"));
+}
+
+FString TDKCommon::TDKCommonUtils::GetPluginProperty(FString PropertyName)
+{
+	// Define the path to the plugin descriptor file
+	FString PluginDescriptorFilePath = FPaths::ProjectPluginsDir() / TEXT("TDK/TDK.uplugin");
+
+	FString FileContents;
+	if (FFileHelper::LoadFileToString(FileContents, *PluginDescriptorFilePath))
+	{
+		TSharedPtr<FJsonObject> JsonObject;
+		TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(FileContents);
+
+		if (FJsonSerializer::Deserialize(Reader, JsonObject) && JsonObject.IsValid())
+		{
+			FString PropertyValue;
+			if (JsonObject->TryGetStringField(PropertyName, PropertyValue))
+			{
+				return PropertyValue;
+			}
+		}
+	}
+
+	return TEXT("Unknown");
+}

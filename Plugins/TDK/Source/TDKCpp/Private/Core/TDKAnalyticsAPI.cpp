@@ -26,16 +26,6 @@ UTDKAnalyticsAPI::~UTDKAnalyticsAPI() {}
 bool UTDKAnalyticsAPI::TrackCustom(FString EvtName, TMap<FString, FString> EvtProps, bool bHighPriority, const FSendEventBatchDelegate& SuccessDelegate, const FTDKErrorDelegate& ErrorDelegate)
 {
 	UTDKRuntimeSettings* Settings = GetMutableDefault<UTDKRuntimeSettings>();
-
-	FString Version;
-	FString Flavour;
-	TSharedPtr<IPlugin> Plugin = IPluginManager::Get().FindPlugin(TEXT("TDK"));
-	if (Plugin.IsValid())
-	{
-		const FPluginDescriptor& Descriptor = Plugin->GetDescriptor();
-		Version = Descriptor.VersionName;
-		Flavour = Descriptor.ParentPluginName;
-	}
 	
 	FTrackCustomRequest Request;
 	Request.SmartAccountAddress = SmartAccountAddress;
@@ -43,8 +33,8 @@ bool UTDKAnalyticsAPI::TrackCustom(FString EvtName, TMap<FString, FString> EvtPr
 	Request.CartridgeTag = Settings->CartridgeTag;
 	Request.SessionId = SessionId;
 	Request.EventId = TEXT("123456");
-	Request.TDKVersion = Version;
-	Request.TdkFlavour = Flavour;
+	Request.TDKVersion = TDKCommon::TDKCommonUtils::GetPluginVersion();
+	Request.TdkFlavour = TDKCommon::TDKCommonUtils::GetPluginName();
 	Request.EventName = EvtName;
 	Request.EventProps = EvtProps;
 	Request.DeviceInfo = TDKCommon::TDKCommonUtils::BuildDeviceInfo();
