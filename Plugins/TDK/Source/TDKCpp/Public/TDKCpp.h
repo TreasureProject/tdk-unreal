@@ -19,9 +19,11 @@ namespace TDK
     }
 
     class UTDKAnalyticsAPI;
+    class UTDKTimeAPI;
 }
 
 typedef TSharedPtr<class TDK::UTDKAnalyticsAPI> TDKAnalyticsPtr;
+typedef TSharedPtr<class TDK::UTDKTimeAPI> TDKTimePtr;
 
 class ITDKCppModuleInterface : public IModuleInterface
 {
@@ -53,4 +55,5 @@ public:
     }
 
     virtual TDKAnalyticsPtr GetAnalyticsAPI() const = 0;
+    virtual TDKTimePtr GetTimeAPI() const = 0;
 };

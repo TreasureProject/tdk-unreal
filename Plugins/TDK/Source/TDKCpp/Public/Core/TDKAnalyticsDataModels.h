@@ -33,9 +33,9 @@ namespace TDK
 
             FString TdkFlavour;
 
-            FString EventTimeLocal;
+            int64 EventTimeLocal;
 
-            FString EventTimeServer;
+            int64 EventTimeServer;
 
             TMap<FString, FString> EventProps;
 

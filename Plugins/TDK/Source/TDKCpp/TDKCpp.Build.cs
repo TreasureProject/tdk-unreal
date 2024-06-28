@@ -23,8 +23,7 @@ public class TDKCpp : ModuleRules
             "HTTP",
             "Json",
             "JsonUtilities",
-            "TDKCommon",
-            "Projects"
+            "TDKCommon"
         });
     }
 }

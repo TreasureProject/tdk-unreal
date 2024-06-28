@@ -11,6 +11,7 @@
 #include "TDKAnalyticsConstants.h"
 
 #include "Core/TDKRequestHandler.h"
+#include "Core/TDKTimeAPI.h"
 #include "TDKAnalyticsAPI.h"
 
 using namespace TDK;
@@ -32,9 +33,10 @@ bool UTDKAnalyticsAPI::TrackCustom(FString EvtName, TMap<FString, FString> EvtPr
 	Request.ChainId = ChainId;
 	Request.CartridgeTag = Settings->CartridgeTag;
 	Request.SessionId = SessionId;
-	Request.EventId = TEXT("123456");
+	Request.EventId = FGuid::NewGuid().ToString(EGuidFormats::Digits);
 	Request.TDKVersion = TDKCommon::TDKCommonUtils::GetPluginVersion();
 	Request.TdkFlavour = TDKCommon::TDKCommonUtils::GetPluginName();
+	Request.EventTimeLocal = ITDKCppModuleInterface::Get().GetTimeAPI()->GetLocalTime();
 	Request.EventName = EvtName;
 	Request.EventProps = EvtProps;
 	Request.DeviceInfo = TDKCommon::TDKCommonUtils::BuildDeviceInfo();
