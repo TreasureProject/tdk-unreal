@@ -2,5 +2,11 @@
 
 
 #include "TDKBaseModel.h"
+#include "TDKJsonObject.h"
+#include "TDKPrivate.h"
 
 
+void FTDKError::decodeError(UTDKJsonObject* responseData)
+{
+    
+}
