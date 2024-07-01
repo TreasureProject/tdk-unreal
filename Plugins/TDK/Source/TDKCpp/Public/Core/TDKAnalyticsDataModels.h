@@ -15,7 +15,7 @@ namespace TDK
 {
 	namespace AnalyticsModels
 	{
-        struct TDKCPP_API FTrackCustomRequest : public TDK::FTDKCppBaseModel
+        struct TDKCPP_API FSendEventRequest : public TDK::FTDKCppBaseModel
 		{
             FString SmartAccountAddress;
 
@@ -43,7 +43,7 @@ namespace TDK
 
             TDKCommon::FAppInfo AppInfo;
 
-            FTrackCustomRequest() :
+            FSendEventRequest() :
                 FTDKCppBaseModel(),
                 SmartAccountAddress(),
                 ChainId(),
@@ -60,14 +60,14 @@ namespace TDK
                 AppInfo()
             {}
 
-            FTrackCustomRequest(const FTrackCustomRequest& Src) = default;
+            FSendEventRequest(const FSendEventRequest& Src) = default;
 
-            FTrackCustomRequest(const TSharedPtr<FJsonObject>& Obj) : FTrackCustomRequest()
+            FSendEventRequest(const TSharedPtr<FJsonObject>& Obj) : FSendEventRequest()
             {
                 ReadFromValue(Obj);
             }
 
-            ~FTrackCustomRequest();
+            ~FSendEventRequest();
 
 			void WriteJSON(JsonWriter& Writer) const override;
 			bool ReadFromValue(const TSharedPtr<FJsonObject>& Obj) override;

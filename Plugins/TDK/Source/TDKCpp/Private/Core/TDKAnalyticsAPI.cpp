@@ -28,7 +28,7 @@ bool UTDKAnalyticsAPI::TrackCustom(FString EvtName, TMap<FString, FString> EvtPr
 {
 	UTDKRuntimeSettings* Settings = GetMutableDefault<UTDKRuntimeSettings>();
 	
-	FTrackCustomRequest Request;
+	FSendEventRequest Request;
 	Request.SmartAccountAddress = SmartAccountAddress;
 	Request.ChainId = ChainId;
 	Request.CartridgeTag = Settings->CartridgeTag;
@@ -47,7 +47,7 @@ bool UTDKAnalyticsAPI::TrackCustom(FString EvtName, TMap<FString, FString> EvtPr
 	return false;
 }
 
-bool UTDKAnalyticsAPI::SendEvent(AnalyticsModels::FTrackCustomRequest Request, const FSendEventBatchDelegate& SuccessDelegate, const FTDKErrorDelegate& ErrorDelegate)
+bool UTDKAnalyticsAPI::SendEvent(AnalyticsModels::FSendEventRequest Request, const FSendEventBatchDelegate& SuccessDelegate, const FTDKErrorDelegate& ErrorDelegate)
 {
 	UE_LOG(LogTDKCpp, Warning, TEXT("%s"), *Request.toJSONString());
 

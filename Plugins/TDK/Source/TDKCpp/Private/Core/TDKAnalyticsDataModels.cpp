@@ -9,13 +9,13 @@
 using namespace TDK;
 using namespace AnalyticsModels;
 
-FTrackCustomRequest::~FTrackCustomRequest()
+FSendEventRequest::~FSendEventRequest()
 {
     //if (InfoRequestParameters != nullptr) delete InfoRequestParameters;
 
 }
 
-void FTrackCustomRequest::WriteJSON(JsonWriter& Writer) const
+void FSendEventRequest::WriteJSON(JsonWriter& Writer) const
 {
     Writer->WriteObjectStart();
 
@@ -97,7 +97,7 @@ void FTrackCustomRequest::WriteJSON(JsonWriter& Writer) const
     Writer->WriteObjectEnd();
 }
 
-bool FTrackCustomRequest::ReadFromValue(const TSharedPtr<FJsonObject>& Obj)
+bool FSendEventRequest::ReadFromValue(const TSharedPtr<FJsonObject>& Obj)
 {
     bool HasSucceeded = true;
 

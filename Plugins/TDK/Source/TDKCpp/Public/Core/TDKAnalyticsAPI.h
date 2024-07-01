@@ -35,7 +35,7 @@ namespace TDK
 		bool TrackCustom(FString EvtName, TMap<FString, FString> EvtProps, bool bHighPriority, const FSendEventBatchDelegate& SuccessDelegate = FSendEventBatchDelegate(), const FTDKErrorDelegate& ErrorDelegate = FTDKErrorDelegate());
 
 		// APIs
-		bool SendEvent(TDK::AnalyticsModels::FTrackCustomRequest Request, const FSendEventBatchDelegate& SuccessDelegate = FSendEventBatchDelegate(), const FTDKErrorDelegate& ErrorDelegate = FTDKErrorDelegate());
+		bool SendEvent(TDK::AnalyticsModels::FSendEventRequest Request, const FSendEventBatchDelegate& SuccessDelegate = FSendEventBatchDelegate(), const FTDKErrorDelegate& ErrorDelegate = FTDKErrorDelegate());
 
 		bool SendEventBatch(FString Payload, const FSendEventBatchDelegate& SuccessDelegate = FSendEventBatchDelegate(), const FTDKErrorDelegate& ErrorDelegate = FTDKErrorDelegate());
 
