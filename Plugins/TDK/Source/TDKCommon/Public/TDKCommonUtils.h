@@ -10,6 +10,7 @@
 
 namespace TDKCommon
 {
+    // Device Information for SendEvent API
     struct FDeviceInfo
     {
         FString DeviceName;
@@ -21,6 +22,7 @@ namespace TDKCommon
         FString DeviceCPU;
     };
 
+    // App Information for SendEvent API
     struct FAppInfo
     {
         FString AppId;
@@ -32,12 +34,16 @@ namespace TDKCommon
 	class TDKCOMMON_API TDKCommonUtils
 	{
 	public:
-        // Device and App Info
+        // --------- Get Device and App Info
 		static FDeviceInfo BuildDeviceInfo();
+
 		static FAppInfo BuildAppInfo();
+
 		static FString GetDeviceModel();
 
+        // --------- Get Self Plugin Boilerplate Information
         static FString GetPluginVersion();
+
         static FString GetPluginName();
 
     protected:

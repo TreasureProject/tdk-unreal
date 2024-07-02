@@ -20,24 +20,24 @@ class FTDKCommonModule : public ITDKCommonModuleInterface
 	virtual void ShutdownModule() override;
 
 	// Settings
-	void RegisterSettings();
-	void UnregisterSettings();
+	void RegisterTDKConfig();
+	void UnregisterTDKConfig();
 };
 
 void FTDKCommonModule::StartupModule()
 {
 	// This code will execute after your module is loaded into memory; the exact timing is specified in the .uplugin file per-module
-    RegisterSettings();
+    RegisterTDKConfig();
 }
 
 void FTDKCommonModule::ShutdownModule()
 {
 	// This function may be called during shutdown to clean up your module.  For modules that support dynamic reloading,
 	// we call this function before unloading the module.
-    UnregisterSettings();
+    UnregisterTDKConfig();
 }
 
-void FTDKCommonModule::RegisterSettings()
+void FTDKCommonModule::RegisterTDKConfig()
 {
 #if WITH_EDITOR
     if (ISettingsModule* SettingsModule = FModuleManager::GetModulePtr<ISettingsModule>("Settings"))
@@ -51,7 +51,7 @@ void FTDKCommonModule::RegisterSettings()
 #endif // WITH_EDITOR
 }
 
-void FTDKCommonModule::UnregisterSettings()
+void FTDKCommonModule::UnregisterTDKConfig()
 {
 #if WITH_EDITOR
     if (ISettingsModule* SettingsModule = FModuleManager::GetModulePtr<ISettingsModule>("Settings"))

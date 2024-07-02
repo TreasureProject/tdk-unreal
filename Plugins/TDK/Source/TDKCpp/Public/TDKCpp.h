@@ -25,6 +25,10 @@ namespace TDK
 typedef TSharedPtr<class TDK::UTDKAnalyticsAPI> TDKAnalyticsPtr;
 typedef TSharedPtr<class TDK::UTDKTimeAPI> TDKTimePtr;
 
+/**
+* The public interface to this module.  In most cases, this interface is only public to sibling modules
+* within this plugin.
+*/
 class ITDKCppModuleInterface : public IModuleInterface
 {
 public:

@@ -21,19 +21,15 @@ using namespace TDKCommon;
 
 FDeviceInfo TDKCommonUtils::BuildDeviceInfo()
 {
-	FDeviceInfo DeviceInfo;
-
-	FString DeviceOS;
 	FString DeviceName;
-	int32 DeviceOSFamily = 0;
-	int32 DeviceType = 0;
-
 #if PLATFORM_WINDOWS
 	DeviceName = FPlatformMisc::GetEnvironmentVariable(TEXT("COMPUTERNAME"));
 #else
 	DeviceName = FPlatformMisc::GetEnvironmentVariable(TEXT("HOSTNAME"));
 #endif
 
+	FString DeviceOS;
+	int32 DeviceOSFamily = 0;
 #if PLATFORM_WINDOWS
 	DeviceOS = TEXT("Windows");
 	DeviceOSFamily = 2;
@@ -51,6 +47,7 @@ FDeviceInfo TDKCommonUtils::BuildDeviceInfo()
 	DeviceOS = TEXT("Unknown");
 #endif
 
+	int32 DeviceType = 0;
 #if PLATFORM_ANDROID || PLATFORM_IOS
 	DeviceType = 1;
 #elif PLATFORM_CONSOLE_DYNAMIC_LINK
@@ -61,6 +58,7 @@ FDeviceInfo TDKCommonUtils::BuildDeviceInfo()
 
 	DeviceOS += TEXT(" ") + FPlatformMisc::GetOSVersion();
 
+	FDeviceInfo DeviceInfo;
 	DeviceInfo.DeviceName = DeviceName;
 	DeviceInfo.DeviceType = DeviceType;
 	DeviceInfo.DeviceModel = GetDeviceModel();
@@ -74,12 +72,7 @@ FDeviceInfo TDKCommonUtils::BuildDeviceInfo()
 
 FAppInfo TDKCommonUtils::BuildAppInfo()
 {
-	FAppInfo AppInfo;
-
 	FString AppId;
-	FString AppVersion;
-	bool AppIsEditor;
-
 	GConfig->GetString(
 		TEXT("/Script/EngineSettings.GeneralProjectSettings"),
 		TEXT("ProjectName"),
@@ -89,18 +82,22 @@ FAppInfo TDKCommonUtils::BuildAppInfo()
 
 	if (AppId.IsEmpty()) AppId = FApp::GetProjectName();
 
+	bool AppIsEditor;
 #if WITH_EDITOR
 	AppIsEditor = true;
 #else
 	AppIsEditor = false;
 #endif
 
+	FString AppVersion;
 	GConfig->GetString(
 		TEXT("/Script/EngineSettings.GeneralProjectSettings"),
 		TEXT("ProjectVersion"),
 		AppVersion,
 		GGameIni
 	);
+
+	FAppInfo AppInfo;
 
 	AppInfo.AppId = AppId;
 	AppInfo.AppIsEditor = AppIsEditor;

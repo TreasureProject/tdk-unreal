@@ -13,16 +13,16 @@ namespace TDKCommon
 	class TDKCOMMON_API TDKAnalyticsConstants
 	{
 	public:
-        // event cache values
+        // -------- event cache values
         static const int MAX_CACHE_EVENT_COUNT = 10;
         static const int MAX_CACHE_SIZE_KB = 64;
         static const int CACHE_FLUSH_TIME_SECONDS = 10;
 
-        // persistent store values
+        // -------- persistent store values
         static const FString PERSISTENT_DIRECTORY_NAME;
         static const int PERSISTENT_MAX_RETRIES = 5;
 
-        // properties
+        // -------- properties
         static const FString CARTRIDGE_TAG;
         static const FString PROP_NAME;
         static const FString PROP_ID;
@@ -58,7 +58,7 @@ namespace TDKCommon
         static const FString PROP_REQUEST_IDS;
         static const FString PROP_ENGINE_TX;
 
-        // events
+        // -------- events
         static const FString EVT_APP_START;
         static const FString EVT_CONNECT_BTN;
         static const FString EVT_TREASURECONNECT_CONNECTED;
@@ -68,7 +68,7 @@ namespace TDKCommon
         static const FString EVT_TREASURECONNECT_UI_CONFIRM;
         static const FString EVT_TREASURECONNECT_UI_ACCOUNT;
 
-        // events - bridgeworld
+        // -------- events - bridgeworld
         static const FString EVT_BRIDGEWORLD_NFTS_STAKE;
         static const FString EVT_BRIDGEWORLD_NFTS_UNSTAKE;
         static const FString EVT_BRIDGEWORLD_NFT_STAKE_BATCH;
