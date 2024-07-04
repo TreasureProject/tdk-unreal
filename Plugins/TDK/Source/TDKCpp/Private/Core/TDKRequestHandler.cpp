@@ -20,7 +20,7 @@ TSharedRef<IHttpRequest> TDKRequestHandler::SendRequest(const FString& urlPath, 
     HttpRequest->SetVerb(TEXT("POST"));
     HttpRequest->SetURL(urlPath);
     HttpRequest->SetHeader(TEXT("Content-Type"), TEXT("application/json; charset=utf-8"));
-
+    
     if (authKey != TEXT(""))
         HttpRequest->SetHeader(authKey, authValue);
 

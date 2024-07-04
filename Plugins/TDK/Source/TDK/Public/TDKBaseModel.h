@@ -12,6 +12,9 @@ struct TDK_API FTDKError
 {
 	GENERATED_USTRUCT_BODY()
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TDK | Error | Models")
+	bool hasError = false;
+
     void decodeError(UTDKJsonObject* responseData);
 };
 

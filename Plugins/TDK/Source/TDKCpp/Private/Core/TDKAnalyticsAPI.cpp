@@ -14,6 +14,9 @@
 #include "Core/TDKTimeAPI.h"
 #include "TDKAnalyticsAPI.h"
 
+#include "Json.h"
+#include "JsonUtilities.h"
+
 using namespace TDK;
 using namespace AnalyticsModels;
 
@@ -49,8 +52,6 @@ bool UTDKAnalyticsAPI::TrackCustom(FString EvtName, TMap<FString, FString> EvtPr
 
 bool UTDKAnalyticsAPI::SendEvent(AnalyticsModels::FSendEventRequest Request, const FSendEventBatchDelegate& SuccessDelegate, const FTDKErrorDelegate& ErrorDelegate)
 {
-	UE_LOG(LogTDKCpp, Warning, TEXT("%s"), *Request.toJSONString());
-
 	return SendEventBatch(Request.toJSONString(), SuccessDelegate, ErrorDelegate);
 }
 
@@ -71,6 +72,16 @@ bool TDK::UTDKAnalyticsAPI::SendEventBatch(FString Payload, const FSendEventBatc
 
 void UTDKAnalyticsAPI::OnSendEventBatchResult(FHttpRequestPtr HttpRequest, FHttpResponsePtr HttpResponse, bool bSucceeded, FSendEventBatchDelegate SuccessDelegate, FTDKErrorDelegate ErrorDelegate)
 {
+	UE_LOG(LogTDKCpp, Warning, TEXT("Request Url: %s"), *HttpRequest->GetURL());
+	
+	FJsonSerializableArray Headers = HttpRequest->GetAllHeaders();
+	for (auto Header : Headers)
+	{
+		UE_LOG(LogTDKCpp, Warning, TEXT("Header Request: %s"), *Header);
+	}
+
+	UE_LOG(LogTDKCpp, Warning, TEXT("Response: %s %d"), *HttpResponse->GetContentAsString(), HttpResponse->GetResponseCode());
+
 	AnalyticsModels::FEmptyResponse outResult;
 	FTDKCppError errorResult;
 	if (TDKRequestHandler::DecodeRequest(HttpRequest, HttpResponse, bSucceeded, outResult, errorResult))

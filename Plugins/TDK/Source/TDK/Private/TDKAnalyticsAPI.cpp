@@ -39,4 +39,18 @@ UTDKAnalyticsAPI* UTDKAnalyticsAPI::SendEvent(FSendEventRequest request, FDelega
 
 void UTDKAnalyticsAPI::HelperSendEvent(FTDKBaseModel response, UObject* customData, bool successful)
 {
+    //FTDKError error = response.responseError;
+    //if (error.hasError && OnFailure.IsBound())
+    //{
+    //    OnFailure.Execute(error, customData);
+    //}
+    //else if (!error.hasError && OnSuccessLoginWithCustomID.IsBound())
+    //{
+    //    FClientLoginResult ResultStruct = UPlayFabClientModelDecoder::decodeLoginResultResponse(response.responseData);
+    //    ResultStruct.Request = RequestJsonObj;
+    //    // CallAuthenticationContext was set in OnProcessRequestComplete
+    //    ResultStruct.AuthenticationContext = CallAuthenticationContext;
+    //    OnSuccessSendEvent.Execute(ResultStruct, mCustomData);
+    //}   
+    //this->RemoveFromRoot();
 }
