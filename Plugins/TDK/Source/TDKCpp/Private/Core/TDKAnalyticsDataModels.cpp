@@ -138,3 +138,18 @@ bool FEmptyResponse::ReadFromValue(const TSharedPtr<FJsonObject>& Obj)
 
     return HasSucceeded;
 }
+
+FSendEventResponse::~FSendEventResponse()
+{
+
+}
+
+void FSendEventResponse::WriteJSON(JsonWriter& Writer) const
+{
+
+}
+
+bool FSendEventResponse::ReadFromValue(const TSharedPtr<FJsonObject>& Obj)
+{
+    return false;
+}

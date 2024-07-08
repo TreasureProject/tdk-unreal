@@ -91,5 +91,36 @@ namespace TDK
             void WriteJSON(JsonWriter& Writer) const override;
             bool ReadFromValue(const TSharedPtr<FJsonObject>& Obj) override;
         };
+
+        struct TDKCPP_API FSendEventResponse : public TDK::FTDKCppResultCommon
+        {
+            FString RequestId;
+
+            FString MD5OfMessageAttributes;
+
+            FString MD5OfMessageBody;
+
+            FString MD5OfMessageSystemAttributes;
+
+            FString MessageId;
+
+            FString SequenceNumber;
+
+            FSendEventResponse() :
+                FTDKCppResultCommon()
+            {}
+
+            FSendEventResponse(const FSendEventResponse& src) = default;
+
+            FSendEventResponse(const TSharedPtr<FJsonObject>& obj) : FSendEventResponse()
+            {
+                ReadFromValue(obj);
+            }
+
+            ~FSendEventResponse();
+
+            void WriteJSON(JsonWriter& Writer) const override;
+            bool ReadFromValue(const TSharedPtr<FJsonObject>& Obj) override;
+        };
 	}
 }
