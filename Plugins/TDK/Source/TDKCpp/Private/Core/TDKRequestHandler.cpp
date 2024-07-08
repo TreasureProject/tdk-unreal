@@ -49,11 +49,7 @@ bool TDKRequestHandler::DecodeRequest(FHttpRequestPtr HttpRequest, FHttpResponse
                     return false;
                 }
 
-                const TSharedPtr<FJsonObject>* DataJsonObject;
-                if (JsonObject->TryGetObjectField(TEXT("data"), DataJsonObject))
-                {
-                    return OutResult.ReadFromValue(*DataJsonObject);
-                }
+                return OutResult.ReadFromValue(JsonObject);
             }
         }
         else

@@ -35,9 +35,10 @@ void ALogActor::Tick(float DeltaTime)
 	 
 }
 
-void ALogActor::OnSuccess(const TDK::AnalyticsModels::FEmptyResponse& Result) const
+void ALogActor::OnSuccess(const TDK::AnalyticsModels::FSendEventResponse& Result) const
 {
 	UE_LOG(LogTemp, Warning, TEXT("Congratulations, you made your first successful Analytics API call!"));
+	UE_LOG(LogTemp, Warning, TEXT("Request Id: %s"), *Result.RequestId);
 }
 
 void ALogActor::OnError(const TDK::FTDKCppError& ErrorResult) const

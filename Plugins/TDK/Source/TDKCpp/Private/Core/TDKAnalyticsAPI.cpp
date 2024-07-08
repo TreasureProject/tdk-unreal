@@ -82,14 +82,14 @@ void UTDKAnalyticsAPI::OnSendEventBatchResult(FHttpRequestPtr HttpRequest, FHttp
 
 	UE_LOG(LogTDKCpp, Warning, TEXT("Response: %s %d"), *HttpResponse->GetContentAsString(), HttpResponse->GetResponseCode());
 
-	AnalyticsModels::FEmptyResponse outResult;
-	FTDKCppError errorResult;
-	if (TDKRequestHandler::DecodeRequest(HttpRequest, HttpResponse, bSucceeded, outResult, errorResult))
+	AnalyticsModels::FSendEventResponse OutResult;
+	FTDKCppError ErrorResult;
+	if (TDKRequestHandler::DecodeRequest(HttpRequest, HttpResponse, bSucceeded, OutResult, ErrorResult))
 	{
-		SuccessDelegate.ExecuteIfBound(outResult);
+		SuccessDelegate.ExecuteIfBound(OutResult);
 	}
 	else
 	{
-		ErrorDelegate.ExecuteIfBound(errorResult);
+		ErrorDelegate.ExecuteIfBound(ErrorResult);
 	}
 }

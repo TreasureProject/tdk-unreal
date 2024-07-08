@@ -17,7 +17,7 @@ namespace TDK
 	class TDKCPP_API UTDKAnalyticsAPI
 	{
 	public:
-		DECLARE_DELEGATE_OneParam(FSendEventBatchDelegate, const AnalyticsModels::FEmptyResponse&);
+		DECLARE_DELEGATE_OneParam(FSendEventBatchDelegate, const AnalyticsModels::FSendEventResponse&);
 
 		UTDKAnalyticsAPI();
 		~UTDKAnalyticsAPI();

@@ -20,7 +20,7 @@ public:
 	// Sets default values for this actor's properties
 	ALogActor();
 
-	void OnSuccess(const TDK::AnalyticsModels::FEmptyResponse& Result) const;
+	void OnSuccess(const TDK::AnalyticsModels::FSendEventResponse& Result) const;
 	void OnError(const TDK::FTDKCppError& ErrorResult) const;
 
 protected:
