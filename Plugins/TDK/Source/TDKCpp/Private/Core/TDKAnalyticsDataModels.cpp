@@ -157,54 +157,20 @@ bool FSendEventResponse::ReadFromValue(const TSharedPtr<FJsonObject>& Obj)
     const TSharedPtr<FJsonObject>* ResponseMetadata;
     if (!SendMessageResponse->Get()->TryGetObjectField(TEXT("ResponseMetadata"), ResponseMetadata)) return false;
     
-    if (!ResponseMetadata->Get()->TryGetStringField(TEXT("RequestId"), RequestId)) return false;
+    ResponseMetadata->Get()->TryGetStringField(TEXT("RequestId"), RequestId);
 
-    /*
-    const TSharedPtr<FJsonValue> InfoResultPayloadValue = Obj->TryGetField(TEXT("InfoResultPayload"));
-    if (InfoResultPayloadValue.IsValid() && !InfoResultPayloadValue->IsNull())
-    {
-        InfoResultPayload = MakeShareable(new FGetPlayerCombinedInfoResultPayload(InfoResultPayloadValue->AsObject()));
-    }
+    const TSharedPtr<FJsonObject>* SendMessageResult;
+    if (!SendMessageResponse->Get()->TryGetObjectField(TEXT("SendMessageResult"), SendMessageResult)) return false;
 
-    const TSharedPtr<FJsonValue> LastLoginTimeValue = Obj->TryGetField(TEXT("LastLoginTime"));
-    if (LastLoginTimeValue.IsValid())
-        LastLoginTime = readDatetime(LastLoginTimeValue);
+    SendMessageResult->Get()->TryGetStringField(TEXT("MD5OfMessageAttributes"), MD5OfMessageAttributes);
 
+    SendMessageResult->Get()->TryGetStringField(TEXT("MD5OfMessageBody"), MD5OfMessageBody);
 
-    const TSharedPtr<FJsonValue> NewlyCreatedValue = Obj->TryGetField(TEXT("NewlyCreated"));
-    if (NewlyCreatedValue.IsValid() && !NewlyCreatedValue->IsNull())
-    {
-        bool TmpValue;
-        if (NewlyCreatedValue->TryGetBool(TmpValue)) { NewlyCreated = TmpValue; }
-    }
+    SendMessageResult->Get()->TryGetStringField(TEXT("MD5OfMessageSystemAttributes"), MD5OfMessageSystemAttributes);
 
-    const TSharedPtr<FJsonValue> PlayFabIdValue = Obj->TryGetField(TEXT("PlayFabId"));
-    if (PlayFabIdValue.IsValid() && !PlayFabIdValue->IsNull())
-    {
-        FString TmpValue;
-        if (PlayFabIdValue->TryGetString(TmpValue)) { PlayFabId = TmpValue; }
-    }
+    SendMessageResult->Get()->TryGetStringField(TEXT("MessageId"), MessageId);
 
-    const TSharedPtr<FJsonValue> SessionTicketValue = Obj->TryGetField(TEXT("SessionTicket"));
-    if (SessionTicketValue.IsValid() && !SessionTicketValue->IsNull())
-    {
-        FString TmpValue;
-        if (SessionTicketValue->TryGetString(TmpValue)) { SessionTicket = TmpValue; }
-    }
+    SendMessageResult->Get()->TryGetStringField(TEXT("SequenceNumber"), SequenceNumber);
 
-    const TSharedPtr<FJsonValue> SettingsForUserValue = Obj->TryGetField(TEXT("SettingsForUser"));
-    if (SettingsForUserValue.IsValid() && !SettingsForUserValue->IsNull())
-    {
-        SettingsForUser = MakeShareable(new FUserSettings(SettingsForUserValue->AsObject()));
-    }
-
-    const TSharedPtr<FJsonValue> TreatmentAssignmentValue = Obj->TryGetField(TEXT("TreatmentAssignment"));
-    if (TreatmentAssignmentValue.IsValid() && !TreatmentAssignmentValue->IsNull())
-    {
-        pfTreatmentAssignment = MakeShareable(new FTreatmentAssignment(TreatmentAssignmentValue->AsObject()));
-    }
-
-    return HasSucceeded;
-    */
     return true;
 }

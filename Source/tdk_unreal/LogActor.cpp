@@ -38,7 +38,13 @@ void ALogActor::Tick(float DeltaTime)
 void ALogActor::OnSuccess(const TDK::AnalyticsModels::FSendEventResponse& Result) const
 {
 	UE_LOG(LogTemp, Warning, TEXT("Congratulations, you made your first successful Analytics API call!"));
+
 	UE_LOG(LogTemp, Warning, TEXT("Request Id: %s"), *Result.RequestId);
+	UE_LOG(LogTemp, Warning, TEXT("MD5 Of Message Attributes: %s"), *Result.MD5OfMessageAttributes);
+	UE_LOG(LogTemp, Warning, TEXT("MD5 Of Message Body: %s"), *Result.MD5OfMessageBody);
+	UE_LOG(LogTemp, Warning, TEXT("MD5 Of Message System Attributes: %s"), *Result.MD5OfMessageSystemAttributes);
+	UE_LOG(LogTemp, Warning, TEXT("Message Id: %s"), *Result.MessageId);
+	UE_LOG(LogTemp, Warning, TEXT("Sequence Number: %s"), *Result.SequenceNumber);
 }
 
 void ALogActor::OnError(const TDK::FTDKCppError& ErrorResult) const
