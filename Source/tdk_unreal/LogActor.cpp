@@ -32,7 +32,7 @@ void ALogActor::BeginPlay()
 void ALogActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	 
+
 }
 
 void ALogActor::OnSuccess(const TDK::AnalyticsModels::FSendEventResponse& Result) const

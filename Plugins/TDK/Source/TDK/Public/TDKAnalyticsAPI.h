@@ -28,6 +28,9 @@ public:
 
 	void SetRequestObject(UTDKJsonObject* JsonObject);
 
+	/** Reset saved response data */
+	void ResetResponseData();
+
 	virtual void Activate() override;
 
 
@@ -52,8 +55,21 @@ public:
 	FDelegateOnFailureTDKError OnFailure;
 	FDelegateOnSuccessSendEvent OnSuccessSendEvent;
 
+private:
+	void OnProcessRequestComplete(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful);
 
 protected:
+	/** Contest of Request stored as a String encoded UTF8*/
+	FString ReqeustContent;
+
+	/** Internal request data stored as JSON */
 	UPROPERTY()
 	UTDKJsonObject* RequestJsonObj;
+
+	/** Response data stored as JSON */
+	UPROPERTY()
+	UTDKJsonObject* ResponseJsonObj;
+
+	/** Mapping of header section to values. Used to generate final header string for request */
+	TMap<FString, FString> RequestHeaders;
 };
