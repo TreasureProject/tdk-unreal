@@ -33,4 +33,23 @@ public:
     {
         return FModuleManager::Get().IsModuleLoaded("TDK");
     }
+
+    inline int32 GetPendingCallCount()
+    {
+        int32 output;
+        pendingCallLock.Lock();
+        output = pendingCalls;
+        pendingCallLock.Unlock();
+        return output;
+    }
+    inline void ModifyPendingCallCount(int32 delta)
+    {
+        pendingCallLock.Lock();
+        pendingCalls += delta;
+        pendingCallLock.Unlock();
+    }
+
+private:
+    FCriticalSection pendingCallLock;
+    int32 pendingCalls;
 };
