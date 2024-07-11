@@ -42,6 +42,34 @@ class TDK_API UTDKJsonObject : public UObject
 	bool DecodeJson(const FString& JsonString);
 
 
+    UFUNCTION(BlueprintPure, Category = "TDK | Json")
+    TArray<FString> GetFieldNames();
+
+    UFUNCTION(BlueprintCallable, Category = "TDK | Json")
+    bool HasField(const FString& FieldName) const;
+
+    UFUNCTION(BlueprintCallable, Category = "TDK | Json")
+    void RemoveField(const FString& FieldName);
+
+    UFUNCTION(BlueprintCallable, Category = "TDK | Json")
+    UTDKJsonValue* GetField(const FString& FieldName) const;
+
+    UFUNCTION(BlueprintCallable, Category = "TDK | Json")
+    void SetField(const FString& FieldName, UTDKJsonValue* JsonValue);
+
+    UFUNCTION(BlueprintCallable, Category = "TDK | Json")
+    void SetFieldNull(const FString& FieldName);
+
+    UFUNCTION(BlueprintCallable, Category = "TDK | Json")
+    TArray<UTDKJsonValue*> GetArrayField(const FString& FieldName);
+
+    UFUNCTION(BlueprintCallable, Category = "TDK | Json")
+    void SetArrayField(const FString& FieldName, const TArray<UTDKJsonValue*>& InArray);
+
+    UFUNCTION(BlueprintCallable, Category = "TDK | Json")
+    void MergeJsonObject(UTDKJsonObject* InJsonObject, bool Overwrite);
+
+
 	//////////////////////////////////////////////////////////////////////////
 	// Data
 
