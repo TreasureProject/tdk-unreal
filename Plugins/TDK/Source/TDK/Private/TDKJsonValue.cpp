@@ -89,6 +89,9 @@ void UTDKJsonValue::SetRootValue(TSharedPtr<FJsonValue>& JsonValue)
 }
 
 
+//////////////////////////////////////////////////////////////////////////
+// FJsonValue API
+
 ETDKJson::Type UTDKJsonValue::GetType() const
 {
     if (!JsonVal.IsValid())
@@ -240,6 +243,9 @@ UTDKJsonObject* UTDKJsonValue::AsObject()
     return JsonObj;
 }
 
+
+//////////////////////////////////////////////////////////////////////////
+// Helpers
 
 void UTDKJsonValue::ErrorMessage(const FString& InType) const
 {
