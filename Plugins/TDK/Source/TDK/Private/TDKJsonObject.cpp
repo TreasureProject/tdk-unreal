@@ -140,77 +140,6 @@ void UTDKJsonObject::SetFieldNull(const FString& FieldName)
     JsonObj->SetField(FieldName, myNull);
 }
 
-TArray<UTDKJsonValue*> UTDKJsonObject::GetArrayField(const FString& FieldName)
-{
-    TArray<UTDKJsonValue*> OutArray;
-    if (!JsonObj.IsValid())
-    {
-        return OutArray;
-    }
-
-    TArray< TSharedPtr<FJsonValue> > ValArray = JsonObj->GetArrayField(FieldName);
-    for (auto Value : ValArray)
-    {
-        UTDKJsonValue* NewValue = NewObject<UTDKJsonValue>();
-        NewValue->SetRootValue(Value);
-
-        OutArray.Add(NewValue);
-    }
-
-    return OutArray;
-}
-
-void UTDKJsonObject::SetArrayField(const FString& FieldName, const TArray<UTDKJsonValue*>& InArray)
-{
-    if (!JsonObj.IsValid())
-    {
-        return;
-    }
-
-    TArray< TSharedPtr<FJsonValue> > ValArray;
-
-    // Process input array and COPY original values
-    for (auto InVal : InArray)
-    {
-        TSharedPtr<FJsonValue> JsonVal = InVal->GetRootValue();
-
-        switch (InVal->GetType())
-        {
-        case ETDKJson::None:
-            break;
-
-        case ETDKJson::Null:
-            ValArray.Add(MakeShareable(new FJsonValueNull()));
-            break;
-
-        case ETDKJson::String:
-            ValArray.Add(MakeShareable(new FJsonValueString(JsonVal->AsString())));
-            break;
-
-        case ETDKJson::Number:
-            ValArray.Add(MakeShareable(new FJsonValueNumber(JsonVal->AsNumber())));
-            break;
-
-        case ETDKJson::Boolean:
-            ValArray.Add(MakeShareable(new FJsonValueBoolean(JsonVal->AsBool())));
-            break;
-
-        case ETDKJson::Array:
-            ValArray.Add(MakeShareable(new FJsonValueArray(JsonVal->AsArray())));
-            break;
-
-        case ETDKJson::Object:
-            ValArray.Add(MakeShareable(new FJsonValueObject(JsonVal->AsObject())));
-            break;
-
-        default:
-            break;
-        }
-    }
-
-    JsonObj->SetArrayField(FieldName, ValArray);
-}
-
 void UTDKJsonObject::MergeJsonObject(UTDKJsonObject* InJsonObject, bool Overwrite)
 {
     TArray<FString> Keys = InJsonObject->GetFieldNames();
@@ -224,4 +153,92 @@ void UTDKJsonObject::MergeJsonObject(UTDKJsonObject* InJsonObject, bool Overwrit
 
         SetField(Key, InJsonObject->GetField(Key));
     }
+}
+
+//////////////////////////////////////////////////////////////////////////
+// FJsonObject API Helpers (easy to use with simple Json objects)
+
+int32 UTDKJsonObject::GetIntegerField(const FString& FieldName) const
+{
+    if (!JsonObj.IsValid())
+    {
+        return 0;
+    }
+
+    return JsonObj->GetIntegerField(FieldName);
+}
+
+void UTDKJsonObject::SetIntegerField(const FString& FieldName, int32 Number)
+{
+    if (!JsonObj.IsValid())
+    {
+        return;
+    }
+
+    JsonObj->SetNumberField(FieldName, Number);
+}
+
+FString UTDKJsonObject::GetStringField(const FString& FieldName) const
+{
+    if (!JsonObj.IsValid())
+    {
+        return TEXT("");
+    }
+
+    return JsonObj->GetStringField(FieldName);
+}
+
+void UTDKJsonObject::SetStringField(const FString& FieldName, const FString& StringValue)
+{
+    if (!JsonObj.IsValid())
+    {
+        return;
+    }
+
+    JsonObj->SetStringField(FieldName, StringValue);
+}
+
+bool UTDKJsonObject::GetBoolField(const FString& FieldName) const
+{
+    if (!JsonObj.IsValid())
+    {
+        return false;
+    }
+
+    return JsonObj->GetBoolField(FieldName);
+}
+
+void UTDKJsonObject::SetBoolField(const FString& FieldName, bool InValue)
+{
+    if (!JsonObj.IsValid())
+    {
+        return;
+    }
+
+    JsonObj->SetBoolField(FieldName, InValue);
+}
+
+UTDKJsonObject* UTDKJsonObject::GetObjectField(const FString& FieldName) const
+{
+    if (!JsonObj.IsValid())
+    {
+        return nullptr;
+    }
+
+    TSharedPtr<FJsonObject> JsonObjField = JsonObj->GetObjectField(FieldName);
+
+    UTDKJsonObject* OutRestJsonObj = NewObject<UTDKJsonObject>();
+    OutRestJsonObj->SetRootObject(JsonObjField);
+
+    return OutRestJsonObj;
+}
+
+void UTDKJsonObject::SetObjectField(const FString& FieldName, UTDKJsonObject* JsonObject)
+{
+    if (!JsonObj.IsValid())
+    {
+        return;
+    }
+
+    JsonObj->SetObjectField(FieldName, JsonObject->GetRootObject());
 }

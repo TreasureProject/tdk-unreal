@@ -61,13 +61,31 @@ class TDK_API UTDKJsonObject : public UObject
     void SetFieldNull(const FString& FieldName);
 
     UFUNCTION(BlueprintCallable, Category = "TDK | Json")
-    TArray<UTDKJsonValue*> GetArrayField(const FString& FieldName);
-
-    UFUNCTION(BlueprintCallable, Category = "TDK | Json")
-    void SetArrayField(const FString& FieldName, const TArray<UTDKJsonValue*>& InArray);
-
-    UFUNCTION(BlueprintCallable, Category = "TDK | Json")
     void MergeJsonObject(UTDKJsonObject* InJsonObject, bool Overwrite);
+
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Json")
+    int32 GetIntegerField(const FString& FieldName) const;
+
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Json")
+    void SetIntegerField(const FString& FieldName, int32 Number);
+
+    UFUNCTION(BlueprintCallable, Category = "TDK | Json")
+    FString GetStringField(const FString& FieldName) const;
+
+    UFUNCTION(BlueprintCallable, Category = "TDK | Json")
+    void SetStringField(const FString& FieldName, const FString& StringValue);
+
+    UFUNCTION(BlueprintCallable, Category = "TDK | Json")
+    bool GetBoolField(const FString& FieldName) const;
+
+    UFUNCTION(BlueprintCallable, Category = "TDK | Json")
+    void SetBoolField(const FString& FieldName, bool InValue);
+
+    UFUNCTION(BlueprintCallable, Category = "TDK | Json")
+    UTDKJsonObject* GetObjectField(const FString& FieldName) const;
+
+    UFUNCTION(BlueprintCallable, Category = "TDK | Json")
+    void SetObjectField(const FString& FieldName, UTDKJsonObject* JsonObject);
 
 
 	//////////////////////////////////////////////////////////////////////////
