@@ -13,7 +13,7 @@
 
 class UTDKJsonObject;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnTDKAnalyticsRequestCompleted, FTDKBaseModel, response, UObject*, customData, bool, successful);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnTDKAnalyticsRequestCompleted, FTDKBaseModel, Response, bool, Successful);
 
 UCLASS(Blueprintable, BlueprintType)
 class TDK_API UTDKAnalyticsAPI : public UOnlineBlueprintCallProxyBase
@@ -21,12 +21,16 @@ class TDK_API UTDKAnalyticsAPI : public UOnlineBlueprintCallProxyBase
 	GENERATED_UCLASS_BODY()
 
 public:
-	DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnFailureTDKError, FTDKError, error, UObject*, customData);
+	DECLARE_DYNAMIC_DELEGATE_OneParam(FDelegateOnFailureTDKError, FTDKError, Error);
 
 	UPROPERTY(BlueprintAssignable)
 	FOnTDKAnalyticsRequestCompleted OnTDKResponse;
 
-	void SetRequestObject(UTDKJsonObject* JsonObject);
+	/** Set the Request Json object */
+	void SetRequestContent(FString ContentString);
+
+	/** Get the Response Json object */
+	UTDKJsonObject* GetResponseObject();
 
 	/** Reset saved response data */
 	void ResetResponseData();
@@ -36,12 +40,15 @@ public:
 
 	DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessSendEvent, FAnalyticsEmptyResult, result, UObject*, customData);
 
+	static UTDKAnalyticsAPI* TrackCustom(FString EventName, TMap<FString, FString> EventProps, bool bHighPriority, FDelegateOnSuccessSendEvent OnSuccess,
+		FDelegateOnFailureTDKError OnFailure);
+
 	UFUNCTION(BlueprintCallable, Category = "TDK | Analytics | Events ", meta = (BlueprintInternalUseOnly = "true"))
-	static UTDKAnalyticsAPI* SendEvent(FSendEventRequest request, FDelegateOnSuccessSendEvent onSuccess,
-		FDelegateOnFailureTDKError onFailure, UObject* customData);
+	static UTDKAnalyticsAPI* SendEvent(FSendEventRequest Request, FDelegateOnSuccessSendEvent OnSuccess,
+		FDelegateOnFailureTDKError OnFailure);
 
 	UFUNCTION(BlueprintCallable, Category = "TDK | Client | Authentication ", meta = (BlueprintInternalUseOnly = "true"))
-	void HelperSendEvent(FTDKBaseModel response, UObject* customData, bool successful);
+	void HelperSendEvent(FTDKBaseModel Response, bool Successful);
 
 
 	FString TDKRequestURL;
@@ -51,7 +58,6 @@ public:
 	int32 ResponseCode;
 	UObject* mCustomData;
 
-
 	FDelegateOnFailureTDKError OnFailure;
 	FDelegateOnSuccessSendEvent OnSuccessSendEvent;
 
@@ -60,7 +66,7 @@ private:
 
 protected:
 	/** Contest of Request stored as a String encoded UTF8*/
-	FString ReqeustContent;
+	FString RequestContent;
 
 	/** Internal request data stored as JSON */
 	UPROPERTY()
@@ -72,4 +78,10 @@ protected:
 
 	/** Mapping of header section to values. Used to generate final header string for request */
 	TMap<FString, FString> RequestHeaders;
+
+	static FString SessionId;
+
+	static FString SmartAccountAddress;
+
+	static int32 ChainId;
 };

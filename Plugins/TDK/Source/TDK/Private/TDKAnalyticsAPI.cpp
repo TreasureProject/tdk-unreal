@@ -2,8 +2,20 @@
 
 
 #include "TDKAnalyticsAPI.h"
+
 #include "TDKPrivate.h"
 #include "TDKRuntimeSettings.h"
+#include "TDKCommonUtils.h"
+#include "TDKAnalyticsConstants.h"
+
+#include "TDKTimeAPI.h"
+#include "TDKAnalyticsModels.h"
+
+FString UTDKAnalyticsAPI::SessionId = TEXT("");
+
+FString UTDKAnalyticsAPI::SmartAccountAddress = TEXT("");
+
+int32 UTDKAnalyticsAPI::ChainId = -1;
 
 UTDKAnalyticsAPI::UTDKAnalyticsAPI(const FObjectInitializer& ObjectInitializer)
     : Super(ObjectInitializer)
@@ -20,26 +32,91 @@ UTDKJsonObject* UTDKAnalyticsAPI::GetResponseObject()
     return ResponseJsonObj;
 }
 
-UTDKAnalyticsAPI* UTDKAnalyticsAPI::SendEvent(FSendEventRequest request, FDelegateOnSuccessSendEvent onSuccess,
-	FDelegateOnFailureTDKError onFailure, UObject* customData)
+UTDKAnalyticsAPI* UTDKAnalyticsAPI::TrackCustom(FString EventName, TMap<FString, FString> EventProps, bool bHighPriority, FDelegateOnSuccessSendEvent OnSuccess, FDelegateOnFailureTDKError OnFailure)
+{
+    FSendEventRequest Request;
+
+    Request.EventName = EventName;
+    Request.EventProps = EventProps;
+
+    return UTDKAnalyticsAPI::SendEvent(Request, OnSuccess, OnFailure);
+}
+
+UTDKAnalyticsAPI* UTDKAnalyticsAPI::SendEvent(FSendEventRequest Request, FDelegateOnSuccessSendEvent OnSuccess,
+	FDelegateOnFailureTDKError OnFailure)
 {
     UTDKAnalyticsAPI* manager = NewObject<UTDKAnalyticsAPI>();
     if (manager->IsSafeForRootSet()) manager->AddToRoot();
     UTDKJsonObject* OutRestJsonObj = NewObject<UTDKJsonObject>();
-    manager->mCustomData = customData;
 
-    manager->OnSuccessSendEvent = onSuccess;
-    manager->OnFailure = onFailure;
+    manager->OnSuccessSendEvent = OnSuccess;
+    manager->OnFailure = OnFailure;
     manager->OnTDKResponse.AddDynamic(manager, &UTDKAnalyticsAPI::HelperSendEvent);
 
     manager->TDKRequestURL = "/events";
 
-    manager->SetRequestObject(OutRestJsonObj);
+    UTDKRuntimeSettings* Settings = GetMutableDefault<UTDKRuntimeSettings>();
+
+    // Serialize all the request properties to json
+    OutRestJsonObj->SetStringField(TDKCommon::TDKAnalyticsConstants::PROP_SMART_ACCOUNT, SmartAccountAddress);
+    OutRestJsonObj->SetIntegerField(TDKCommon::TDKAnalyticsConstants::PROP_CHAIN_ID, ChainId);
+    OutRestJsonObj->SetStringField(TDKCommon::TDKAnalyticsConstants::CARTRIDGE_TAG, Settings->CartridgeTag);
+    OutRestJsonObj->SetStringField(TDKCommon::TDKAnalyticsConstants::PROP_NAME, Request.EventName);
+    OutRestJsonObj->SetStringField(TDKCommon::TDKAnalyticsConstants::PROP_SESSION_ID, SessionId);
+    OutRestJsonObj->SetStringField(TDKCommon::TDKAnalyticsConstants::PROP_ID, FGuid::NewGuid().ToString(EGuidFormats::Digits));
+    OutRestJsonObj->SetStringField(TDKCommon::TDKAnalyticsConstants::PROP_TDK_VERSION, TDKCommon::TDKCommonUtils::GetPluginVersion());
+    OutRestJsonObj->SetStringField(TDKCommon::TDKAnalyticsConstants::PROP_TDK_FLAVOUR, TDKCommon::TDKCommonUtils::GetPluginName());
+    OutRestJsonObj->SetIntegerField(TDKCommon::TDKAnalyticsConstants::PROP_TIME_LOCAL, UTDKTimeAPI::GetLocalTime());
+    // TODO: Save Server Time in Json
+    OutRestJsonObj->SetIntegerField(TDKCommon::TDKAnalyticsConstants::PROP_TIME_SERVER, UTDKTimeAPI::GetLocalTime());
+
+    UTDKJsonObject* EventPropsObj = NewObject<UTDKJsonObject>();
+    for (auto Prop : Request.EventProps)
+    {
+        EventPropsObj->SetStringField(Prop.Key, Prop.Value);
+    }
+
+    OutRestJsonObj->SetObjectField(TDKCommon::TDKAnalyticsConstants::PROP_PROPERTIES, EventPropsObj);
+
+    TDKCommon::FDeviceInfo DeviceInfo = TDKCommon::TDKCommonUtils::BuildDeviceInfo();
+    UTDKJsonObject* DeviceInfoJsonObj = NewObject<UTDKJsonObject>();
+    DeviceInfoJsonObj->SetStringField(TDKCommon::TDKAnalyticsConstants::PROP_DEVICE_NAME, DeviceInfo.DeviceName);
+    DeviceInfoJsonObj->SetStringField(TDKCommon::TDKAnalyticsConstants::PROP_DEVICE_MODEL, DeviceInfo.DeviceModel);
+    DeviceInfoJsonObj->SetIntegerField(TDKCommon::TDKAnalyticsConstants::PROP_DEVICE_TYPE, DeviceInfo.DeviceType);
+    DeviceInfoJsonObj->SetStringField(TDKCommon::TDKAnalyticsConstants::PROP_DEVICE_UNIQUE_ID, DeviceInfo.DeviceUniqueId);
+    DeviceInfoJsonObj->SetStringField(TDKCommon::TDKAnalyticsConstants::PROP_DEVICE_OS, DeviceInfo.DeviceOS);
+    DeviceInfoJsonObj->SetIntegerField(TDKCommon::TDKAnalyticsConstants::PROP_DEVICE_OS_FAMILY, DeviceInfo.DeviceOSFamily);
+    DeviceInfoJsonObj->SetStringField(TDKCommon::TDKAnalyticsConstants::PROP_DEVICE_CPU, DeviceInfo.DeviceCPU);
+
+    OutRestJsonObj->SetObjectField(TDKCommon::TDKAnalyticsConstants::PROP_DEVICE, DeviceInfoJsonObj);
+
+    TDKCommon::FAppInfo AppInfo = TDKCommon::TDKCommonUtils::BuildAppInfo();
+    UTDKJsonObject* AppInfoJsonObj = NewObject<UTDKJsonObject>();
+    AppInfoJsonObj->SetStringField(TDKCommon::TDKAnalyticsConstants::PROP_APP_IDENTIFIER, AppInfo.AppId);
+    AppInfoJsonObj->SetBoolField(TDKCommon::TDKAnalyticsConstants::PROP_APP_IS_EDITOR, AppInfo.AppIsEditor);
+    AppInfoJsonObj->SetStringField(TDKCommon::TDKAnalyticsConstants::PROP_APP_VERSION, AppInfo.AppVersion);
+    AppInfoJsonObj->SetIntegerField(TDKCommon::TDKAnalyticsConstants::PROP_APP_ENVIRONMENT, AppInfo.AppEnvironment);
+
+    OutRestJsonObj->SetObjectField(TDKCommon::TDKAnalyticsConstants::PROP_APP, AppInfoJsonObj);
+
+    // Serialize data to json string
+    FString OutputString;
+    TSharedRef< TJsonWriter<> > Writer = TJsonWriterFactory<>::Create(&OutputString);
+    FJsonSerializer::Serialize(OutRestJsonObj->GetRootObject().ToSharedRef(), Writer);
+
+    if (OutputString.StartsWith(TEXT("{")))
+    {
+        OutputString = TEXT("[") + OutputString + TEXT("]");
+    }
+
+    UE_LOG(LogTDK, Error, TEXT("%s"), *OutputString);
+
+    manager->SetRequestContent(OutputString);
 
     return manager;
 }
 
-void UTDKAnalyticsAPI::HelperSendEvent(FTDKBaseModel response, UObject* customData, bool successful)
+void UTDKAnalyticsAPI::HelperSendEvent(FTDKBaseModel response, bool Successful)
 {
     //FTDKError error = response.responseError;
     //if (error.hasError && OnFailure.IsBound())
@@ -86,7 +163,7 @@ void UTDKAnalyticsAPI::OnProcessRequestComplete(FHttpRequestPtr Request, FHttpRe
         myResponse.responseError.ErrorName = "Unable to contact server";
         myResponse.responseError.ErrorMessage = "Unable to contact server";
 
-        OnTDKResponse.Broadcast(myResponse, mCustomData, false);
+        OnTDKResponse.Broadcast(myResponse, false);
 
         return;
     }
@@ -116,7 +193,7 @@ void UTDKAnalyticsAPI::OnProcessRequestComplete(FHttpRequestPtr Request, FHttpRe
     ITDK* pfSettings = &(ITDK::Get());
 
     // Broadcast the result event
-    OnTDKResponse.Broadcast(myResponse, mCustomData, !myResponse.responseError.hasError);
+    OnTDKResponse.Broadcast(myResponse, !myResponse.responseError.hasError);
     pfSettings->ModifyPendingCallCount(-1);
 }
 
@@ -124,7 +201,7 @@ void UTDKAnalyticsAPI::Activate()
 {
     ITDK* pfSettings = &(ITDK::Get());
 
-    FString RequestUrl = GetMutableDefault<UTDKRuntimeSettings>()->GetAnalyticsApiUrl();
+    FString RequestUrl = GetMutableDefault<UTDKRuntimeSettings>()->GetAnalyticsApiUrl() + TDKRequestURL;
 
     TSharedRef<IHttpRequest> HttpRequest = FHttpModule::Get().CreateRequest();
     HttpRequest->SetURL(RequestUrl);
