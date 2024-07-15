@@ -110,8 +110,6 @@ bool TDKRequestHandler::DecodeError(TSharedPtr<FJsonObject> JsonObject, TDK::FTD
             }
         }
 
-        // TODO: handle global error delegate here
-
         // We encountered no errors parsing the error
         return true;
     }

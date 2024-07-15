@@ -40,6 +40,7 @@ bool UTDKAnalyticsAPI::TrackCustom(FString EvtName, TMap<FString, FString> EvtPr
 	Request.TDKVersion = TDKCommon::TDKCommonUtils::GetPluginVersion();
 	Request.TdkFlavour = TDKCommon::TDKCommonUtils::GetPluginName();
 	Request.EventTimeLocal = ITDKCppModuleInterface::Get().GetTimeAPI()->GetLocalTime();
+	// TODO: Save Server Time in Request
 	Request.EventName = EvtName;
 	Request.EventProps = EvtProps;
 	Request.DeviceInfo = TDKCommon::TDKCommonUtils::BuildDeviceInfo();
