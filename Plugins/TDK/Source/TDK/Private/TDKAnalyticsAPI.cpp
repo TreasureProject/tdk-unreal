@@ -66,9 +66,9 @@ UTDKAnalyticsAPI* UTDKAnalyticsAPI::SendEvent(FSendEventRequest Request, FDelega
     OutRestJsonObj->SetStringField(TDKCommon::TDKAnalyticsConstants::PROP_ID, FGuid::NewGuid().ToString(EGuidFormats::Digits));
     OutRestJsonObj->SetStringField(TDKCommon::TDKAnalyticsConstants::PROP_TDK_VERSION, TDKCommon::TDKCommonUtils::GetPluginVersion());
     OutRestJsonObj->SetStringField(TDKCommon::TDKAnalyticsConstants::PROP_TDK_FLAVOUR, TDKCommon::TDKCommonUtils::GetPluginName());
-    OutRestJsonObj->SetIntegerField(TDKCommon::TDKAnalyticsConstants::PROP_TIME_LOCAL, UTDKTimeAPI::GetLocalTime());
+    OutRestJsonObj->SetBigIntegerField(TDKCommon::TDKAnalyticsConstants::PROP_TIME_LOCAL, UTDKTimeAPI::GetLocalTime());
     // TODO: Save Server Time in Json
-    OutRestJsonObj->SetIntegerField(TDKCommon::TDKAnalyticsConstants::PROP_TIME_SERVER, UTDKTimeAPI::GetLocalTime());
+    OutRestJsonObj->SetBigIntegerField(TDKCommon::TDKAnalyticsConstants::PROP_TIME_SERVER, UTDKTimeAPI::GetLocalTime());
 
     UTDKJsonObject* EventPropsObj = NewObject<UTDKJsonObject>();
     for (auto Prop : Request.EventProps)

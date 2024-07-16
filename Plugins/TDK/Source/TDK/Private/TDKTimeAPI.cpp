@@ -10,5 +10,5 @@ int64 UTDKTimeAPI::GetLocalTime()
     FDateTime UnixEpoch(1970, 1, 1);
     FTimespan TimespanSinceEpoch = Now - UnixEpoch;
 
-    return (int64)TimespanSinceEpoch.GetTotalMilliseconds();
+    return FMath::FloorToInt(TimespanSinceEpoch.GetTotalMilliseconds());
 }
