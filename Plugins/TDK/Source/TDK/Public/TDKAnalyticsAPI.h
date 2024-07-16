@@ -35,11 +35,18 @@ public:
 	/** Reset saved response data */
 	void ResetResponseData();
 
+	/** UOnlineBlueprintCallProxyBase interface */
 	virtual void Activate() override;
 
 
+	//////////////////////////////////////////////////////////////////////////
+	// Generated TDK Analytics API Functions
+	//////////////////////////////////////////////////////////////////////////
+
+	// callbacks
 	DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessSendEvent, FAnalyticsEmptyResult, result, UObject*, customData);
 
+	// Send Event API
 	static UTDKAnalyticsAPI* TrackCustom(FString EventName, TMap<FString, FString> EventProps, bool bHighPriority, FDelegateOnSuccessSendEvent OnSuccess,
 		FDelegateOnFailureTDKError OnFailure);
 
@@ -47,12 +54,15 @@ public:
 	static UTDKAnalyticsAPI* SendEvent(FSendEventRequest Request, FDelegateOnSuccessSendEvent OnSuccess,
 		FDelegateOnFailureTDKError OnFailure);
 
+	// // Implements FOnTDKAnalyticsRequestCompleted
 	UFUNCTION(BlueprintCallable, Category = "TDK | Client | Authentication ", meta = (BlueprintInternalUseOnly = "true"))
 	void HelperSendEvent(FTDKBaseModel Response, bool Successful);
 
 
+	/** TDK Request Info */
 	FString TDKRequestURL;
 
+	/** Is the response valid JSON? */
 	bool bIsValidJsonResponse;
 	FString ResponseContent;
 	int32 ResponseCode;
@@ -61,7 +71,9 @@ public:
 	FDelegateOnFailureTDKError OnFailure;
 	FDelegateOnSuccessSendEvent OnSuccessSendEvent;
 
+
 private:
+	/** Internal bind function for the IHTTPRequest::OnProcessRequestCompleted() event */
 	void OnProcessRequestComplete(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful);
 
 protected:
@@ -78,6 +90,10 @@ protected:
 
 	/** Mapping of header section to values. Used to generate final header string for request */
 	TMap<FString, FString> RequestHeaders;
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// TDK
 
 	static FString SessionId;
 
