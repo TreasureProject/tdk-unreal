@@ -39,6 +39,10 @@ void UTDKJsonObject::SetRootObject(TSharedPtr<FJsonObject>& JsonObject)
     JsonObj = JsonObject;
 }
 
+
+//////////////////////////////////////////////////////////////////////////
+// Serialization
+
 FString UTDKJsonObject::EncodeJson() const
 {
     if (!JsonObj.IsValid())
@@ -68,6 +72,10 @@ bool UTDKJsonObject::DecodeJson(const FString& JsonString)
 
     return false;
 }
+
+
+//////////////////////////////////////////////////////////////////////////
+// FJsonObject API
 
 TArray<FString> UTDKJsonObject::GetFieldNames()
 {
