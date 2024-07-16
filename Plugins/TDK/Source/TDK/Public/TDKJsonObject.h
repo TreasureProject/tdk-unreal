@@ -85,6 +85,10 @@ class TDK_API UTDKJsonObject : public UObject
     UFUNCTION(BlueprintCallable, Category = "PlayFab | Json")
     void SetIntegerField(const FString& FieldName, int32 Number);
 
+    /** Add a field named FieldName with Int64 as value */
+    UFUNCTION(BlueprintCallable, Category = "PlayFab | Json")
+    void SetBigIntegerField(const FString& FieldName, int64 Number);
+
     /** Get the field named FieldName as a string. */
     UFUNCTION(BlueprintCallable, Category = "TDK | Json")
     FString GetStringField(const FString& FieldName) const;

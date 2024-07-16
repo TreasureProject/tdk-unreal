@@ -186,6 +186,16 @@ void UTDKJsonObject::SetIntegerField(const FString& FieldName, int32 Number)
     JsonObj->SetNumberField(FieldName, Number);
 }
 
+void UTDKJsonObject::SetBigIntegerField(const FString& FieldName, int64 Number)
+{
+    if (!JsonObj.IsValid())
+    {
+        return;
+    }
+
+    JsonObj->SetNumberField(FieldName, Number);
+}
+
 FString UTDKJsonObject::GetStringField(const FString& FieldName) const
 {
     if (!JsonObj.IsValid())
