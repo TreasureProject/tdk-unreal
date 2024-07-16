@@ -41,10 +41,10 @@ struct TDK_API FTDKBaseModel
 	GENERATED_USTRUCT_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TDK | Error | Models")
-	FTDKError responseError = {};
+	FTDKError ResponseError = {};
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TDK | Error | Models")
-	UTDKJsonObject* responseData = nullptr;
+	UTDKJsonObject* ResponseData = nullptr;
 };
 
 USTRUCT(BlueprintType)

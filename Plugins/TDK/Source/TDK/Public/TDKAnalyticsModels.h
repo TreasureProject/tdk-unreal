@@ -18,7 +18,7 @@ public:
     FString EventName;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TDK | Analytics | Event Models")
-    TMap<FString, FString> EventProps;
+    UTDKJsonObject* EventProps;
 };
 
 USTRUCT(BlueprintType)

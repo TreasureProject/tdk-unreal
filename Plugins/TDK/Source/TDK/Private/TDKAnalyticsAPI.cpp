@@ -7,9 +7,9 @@
 #include "TDKRuntimeSettings.h"
 #include "TDKCommonUtils.h"
 #include "TDKAnalyticsConstants.h"
-
 #include "TDKTimeAPI.h"
 #include "TDKAnalyticsModels.h"
+#include "TDKAnalyticsModelDecoder.h"
 
 FString UTDKAnalyticsAPI::SessionId = TEXT("");
 
@@ -32,7 +32,7 @@ UTDKJsonObject* UTDKAnalyticsAPI::GetResponseObject()
     return ResponseJsonObj;
 }
 
-UTDKAnalyticsAPI* UTDKAnalyticsAPI::TrackCustom(FString EventName, TMap<FString, FString> EventProps, bool bHighPriority, FDelegateOnSuccessSendEvent OnSuccess, FDelegateOnFailureTDKError OnFailure)
+UTDKAnalyticsAPI* UTDKAnalyticsAPI::TrackCustom(FString EventName, UTDKJsonObject* EventProps, bool bHighPriority, FDelegateOnSuccessSendEvent OnSuccess, FDelegateOnFailureTDKError OnFailure)
 {
     FSendEventRequest Request;
 
@@ -70,13 +70,7 @@ UTDKAnalyticsAPI* UTDKAnalyticsAPI::SendEvent(FSendEventRequest Request, FDelega
     // TODO: Save Server Time in Json
     OutRestJsonObj->SetBigIntegerField(TDKCommon::TDKAnalyticsConstants::PROP_TIME_SERVER, UTDKTimeAPI::GetLocalTime());
 
-    UTDKJsonObject* EventPropsObj = NewObject<UTDKJsonObject>();
-    for (auto Prop : Request.EventProps)
-    {
-        EventPropsObj->SetStringField(Prop.Key, Prop.Value);
-    }
-
-    OutRestJsonObj->SetObjectField(TDKCommon::TDKAnalyticsConstants::PROP_PROPERTIES, EventPropsObj);
+    OutRestJsonObj->SetObjectField(TDKCommon::TDKAnalyticsConstants::PROP_PROPERTIES, Request.EventProps);
 
     TDKCommon::FDeviceInfo DeviceInfo = TDKCommon::TDKCommonUtils::BuildDeviceInfo();
     UTDKJsonObject* DeviceInfoJsonObj = NewObject<UTDKJsonObject>();
@@ -109,29 +103,26 @@ UTDKAnalyticsAPI* UTDKAnalyticsAPI::SendEvent(FSendEventRequest Request, FDelega
         OutputString = TEXT("[") + OutputString + TEXT("]");
     }
 
-    UE_LOG(LogTDK, Error, TEXT("%s"), *OutputString);
-
     manager->SetRequestContent(OutputString);
 
     return manager;
 }
 
-void UTDKAnalyticsAPI::HelperSendEvent(FTDKBaseModel response, bool Successful)
+void UTDKAnalyticsAPI::HelperSendEvent(FTDKBaseModel Response, bool Successful)
 {
-    //FTDKError error = response.responseError;
-    //if (error.hasError && OnFailure.IsBound())
-    //{
-    //    OnFailure.Execute(error, customData);
-    //}
-    //else if (!error.hasError && OnSuccessLoginWithCustomID.IsBound())
-    //{
-    //    FClientLoginResult ResultStruct = UTDKClientModelDecoder::decodeLoginResultResponse(response.responseData);
-    //    ResultStruct.Request = RequestJsonObj;
-    //    // CallAuthenticationContext was set in OnProcessRequestComplete
-    //    ResultStruct.AuthenticationContext = CallAuthenticationContext;
-    //    OnSuccessSendEvent.Execute(ResultStruct, mCustomData);
-    //}   
-    //this->RemoveFromRoot();
+    FTDKError Error = Response.ResponseError;
+    if (Error.hasError && OnFailure.IsBound())
+    {
+        OnFailure.Execute(Error);
+    }
+    else if (!Error.hasError && OnSuccessSendEvent.IsBound())
+    {
+        FSendEventResult ResultStruct = UTDKAnalyticsModelDecoder::DecodeSendEventResponse(Response.ResponseData);
+        ResultStruct.Request = RequestJsonObj;
+
+        OnSuccessSendEvent.Execute(ResultStruct);
+    }   
+    this->RemoveFromRoot();
 }
 
 void UTDKAnalyticsAPI::OnProcessRequestComplete(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful)
@@ -158,10 +149,10 @@ void UTDKAnalyticsAPI::OnProcessRequestComplete(FHttpRequestPtr Request, FHttpRe
         UE_LOG(LogTDK, Error, TEXT("Request failed: %s"), *Request->GetURL());
 
         // Broadcast the result event
-        myResponse.responseError.hasError = true;
-        myResponse.responseError.ErrorCode = 503;
-        myResponse.responseError.ErrorName = "Unable to contact server";
-        myResponse.responseError.ErrorMessage = "Unable to contact server";
+        myResponse.ResponseError.hasError = true;
+        myResponse.ResponseError.ErrorCode = 503;
+        myResponse.ResponseError.ErrorName = "Unable to contact server";
+        myResponse.ResponseError.ErrorMessage = "Unable to contact server";
 
         OnTDKResponse.Broadcast(myResponse, false);
 
@@ -188,12 +179,12 @@ void UTDKAnalyticsAPI::OnProcessRequestComplete(FHttpRequestPtr Request, FHttpRe
     // Log response state
     UE_LOG(LogTDK, Log, TEXT("Response : %s"), *ResponseContent);
 
-    myResponse.responseError.decodeError(ResponseJsonObj);
-    myResponse.responseData = ResponseJsonObj;
+    myResponse.ResponseError.decodeError(ResponseJsonObj);
+    myResponse.ResponseData = ResponseJsonObj;
     ITDK* pfSettings = &(ITDK::Get());
 
     // Broadcast the result event
-    OnTDKResponse.Broadcast(myResponse, !myResponse.responseError.hasError);
+    OnTDKResponse.Broadcast(myResponse, !myResponse.ResponseError.hasError);
     pfSettings->ModifyPendingCallCount(-1);
 }
 

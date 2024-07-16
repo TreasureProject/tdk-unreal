@@ -44,10 +44,10 @@ public:
 	//////////////////////////////////////////////////////////////////////////
 
 	// callbacks
-	DECLARE_DYNAMIC_DELEGATE_TwoParams(FDelegateOnSuccessSendEvent, FAnalyticsEmptyResult, result, UObject*, customData);
+	DECLARE_DYNAMIC_DELEGATE_OneParam(FDelegateOnSuccessSendEvent, FSendEventResult, Result);
 
 	// Send Event API
-	static UTDKAnalyticsAPI* TrackCustom(FString EventName, TMap<FString, FString> EventProps, bool bHighPriority, FDelegateOnSuccessSendEvent OnSuccess,
+	static UTDKAnalyticsAPI* TrackCustom(FString EventName, UTDKJsonObject* EventProps, bool bHighPriority, FDelegateOnSuccessSendEvent OnSuccess,
 		FDelegateOnFailureTDKError OnFailure);
 
 	UFUNCTION(BlueprintCallable, Category = "TDK | Analytics | Events ", meta = (BlueprintInternalUseOnly = "true"))
