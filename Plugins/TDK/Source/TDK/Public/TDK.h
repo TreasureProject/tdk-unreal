@@ -5,9 +5,7 @@
 #include "CoreMinimal.h"
 #include "Modules/ModuleManager.h"
 
-DECLARE_LOG_CATEGORY_EXTERN(LogTDK, Log, All);
-
-class ITDKModuleInterface : public IModuleInterface
+class ITDK : public IModuleInterface
 {
 public:
 
@@ -17,13 +15,13 @@ public:
     *
     * @return Returns singleton instance, loading the module on demand if needed
     */
-    static inline ITDKModuleInterface& Get()
+    static inline ITDK& Get()
     {
         if (IsAvailable())
         {
-            return FModuleManager::GetModuleChecked<ITDKModuleInterface>("TDK");
+            return FModuleManager::GetModuleChecked<ITDK>("TDK");
         }
-        return FModuleManager::LoadModuleChecked<ITDKModuleInterface>("TDK");
+        return FModuleManager::LoadModuleChecked<ITDK>("TDK");
     }
 
     /**
@@ -35,4 +33,23 @@ public:
     {
         return FModuleManager::Get().IsModuleLoaded("TDK");
     }
+
+    inline int32 GetPendingCallCount()
+    {
+        int32 output;
+        pendingCallLock.Lock();
+        output = pendingCalls;
+        pendingCallLock.Unlock();
+        return output;
+    }
+    inline void ModifyPendingCallCount(int32 delta)
+    {
+        pendingCallLock.Lock();
+        pendingCalls += delta;
+        pendingCallLock.Unlock();
+    }
+
+private:
+    FCriticalSection pendingCallLock;
+    int32 pendingCalls;
 };

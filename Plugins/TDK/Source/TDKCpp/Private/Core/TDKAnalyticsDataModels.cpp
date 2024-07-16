@@ -9,13 +9,13 @@
 using namespace TDK;
 using namespace AnalyticsModels;
 
-FTrackCustomRequest::~FTrackCustomRequest()
+FSendEventRequest::~FSendEventRequest()
 {
     //if (InfoRequestParameters != nullptr) delete InfoRequestParameters;
 
 }
 
-void FTrackCustomRequest::WriteJSON(JsonWriter& Writer) const
+void FSendEventRequest::WriteJSON(JsonWriter& Writer) const
 {
     Writer->WriteObjectStart();
 
@@ -97,7 +97,7 @@ void FTrackCustomRequest::WriteJSON(JsonWriter& Writer) const
     Writer->WriteObjectEnd();
 }
 
-bool FTrackCustomRequest::ReadFromValue(const TSharedPtr<FJsonObject>& Obj)
+bool FSendEventRequest::ReadFromValue(const TSharedPtr<FJsonObject>& Obj)
 {
     bool HasSucceeded = true;
 
@@ -137,4 +137,40 @@ bool FEmptyResponse::ReadFromValue(const TSharedPtr<FJsonObject>& Obj)
     bool HasSucceeded = true;
 
     return HasSucceeded;
+}
+
+FSendEventResponse::~FSendEventResponse()
+{
+
+}
+
+void FSendEventResponse::WriteJSON(JsonWriter& Writer) const
+{
+    
+}
+
+bool FSendEventResponse::ReadFromValue(const TSharedPtr<FJsonObject>& Obj)
+{
+    const TSharedPtr<FJsonObject>* SendMessageResponse;
+    if (!Obj->TryGetObjectField(TEXT("SendMessageResponse"), SendMessageResponse)) return false;
+
+    const TSharedPtr<FJsonObject>* ResponseMetadata;
+    if (!SendMessageResponse->Get()->TryGetObjectField(TEXT("ResponseMetadata"), ResponseMetadata)) return false;
+    
+    ResponseMetadata->Get()->TryGetStringField(TEXT("RequestId"), RequestId);
+
+    const TSharedPtr<FJsonObject>* SendMessageResult;
+    if (!SendMessageResponse->Get()->TryGetObjectField(TEXT("SendMessageResult"), SendMessageResult)) return false;
+
+    SendMessageResult->Get()->TryGetStringField(TEXT("MD5OfMessageAttributes"), MD5OfMessageAttributes);
+
+    SendMessageResult->Get()->TryGetStringField(TEXT("MD5OfMessageBody"), MD5OfMessageBody);
+
+    SendMessageResult->Get()->TryGetStringField(TEXT("MD5OfMessageSystemAttributes"), MD5OfMessageSystemAttributes);
+
+    SendMessageResult->Get()->TryGetStringField(TEXT("MessageId"), MessageId);
+
+    SendMessageResult->Get()->TryGetStringField(TEXT("SequenceNumber"), SequenceNumber);
+
+    return true;
 }

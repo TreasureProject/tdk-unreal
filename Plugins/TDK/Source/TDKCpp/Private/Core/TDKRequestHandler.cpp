@@ -20,7 +20,7 @@ TSharedRef<IHttpRequest> TDKRequestHandler::SendRequest(const FString& urlPath, 
     HttpRequest->SetVerb(TEXT("POST"));
     HttpRequest->SetURL(urlPath);
     HttpRequest->SetHeader(TEXT("Content-Type"), TEXT("application/json; charset=utf-8"));
-
+    
     if (authKey != TEXT(""))
         HttpRequest->SetHeader(authKey, authValue);
 
@@ -49,11 +49,7 @@ bool TDKRequestHandler::DecodeRequest(FHttpRequestPtr HttpRequest, FHttpResponse
                     return false;
                 }
 
-                const TSharedPtr<FJsonObject>* DataJsonObject;
-                if (JsonObject->TryGetObjectField(TEXT("data"), DataJsonObject))
-                {
-                    return OutResult.ReadFromValue(*DataJsonObject);
-                }
+                return OutResult.ReadFromValue(JsonObject);
             }
         }
         else
@@ -113,8 +109,6 @@ bool TDKRequestHandler::DecodeError(TSharedPtr<FJsonObject> JsonObject, TDK::FTD
                 }
             }
         }
-
-        // TODO: handle global error delegate here
 
         // We encountered no errors parsing the error
         return true;

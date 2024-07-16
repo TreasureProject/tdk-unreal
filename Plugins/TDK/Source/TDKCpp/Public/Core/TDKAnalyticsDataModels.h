@@ -3,7 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
 #include "TDKCppBaseModel.h"
+#include "TDKCommonUtils.h"
 
 /**
  * 
@@ -13,26 +15,7 @@ namespace TDK
 {
 	namespace AnalyticsModels
 	{
-        struct FDeviceInfo
-        {
-            FString DeviceName;
-            FString DeviceModel;
-            int DeviceType;
-            FString DeviceUniqueId;
-            FString DeviceOS;
-            int DeviceOSFamily;
-            FString DeviceCPU;
-        };
-
-        struct FAppInfo
-        {
-            FString AppId;
-            bool AppIsEditor;
-            FString AppVersion;
-            int AppEnvironment;
-        };
-        
-        struct TDKCPP_API FTrackCustomRequest : public TDK::FTDKCppBaseModel
+        struct TDKCPP_API FSendEventRequest : public TDK::FTDKCppBaseModel
 		{
             FString SmartAccountAddress;
 
@@ -50,17 +33,17 @@ namespace TDK
 
             FString TdkFlavour;
 
-            FString EventTimeLocal;
+            int64 EventTimeLocal;
 
-            FString EventTimeServer;
+            int64 EventTimeServer;
 
             TMap<FString, FString> EventProps;
 
-            FDeviceInfo DeviceInfo;
+            TDKCommon::FDeviceInfo DeviceInfo;
 
-            FAppInfo AppInfo;
+            TDKCommon::FAppInfo AppInfo;
 
-            FTrackCustomRequest() :
+            FSendEventRequest() :
                 FTDKCppBaseModel(),
                 SmartAccountAddress(),
                 ChainId(),
@@ -77,14 +60,14 @@ namespace TDK
                 AppInfo()
             {}
 
-            FTrackCustomRequest(const FTrackCustomRequest& Src) = default;
+            FSendEventRequest(const FSendEventRequest& Src) = default;
 
-            FTrackCustomRequest(const TSharedPtr<FJsonObject>& Obj) : FTrackCustomRequest()
+            FSendEventRequest(const TSharedPtr<FJsonObject>& Obj) : FSendEventRequest()
             {
                 ReadFromValue(Obj);
             }
 
-            ~FTrackCustomRequest();
+            ~FSendEventRequest();
 
 			void WriteJSON(JsonWriter& Writer) const override;
 			bool ReadFromValue(const TSharedPtr<FJsonObject>& Obj) override;
@@ -104,6 +87,37 @@ namespace TDK
             }
 
             ~FEmptyResponse();
+
+            void WriteJSON(JsonWriter& Writer) const override;
+            bool ReadFromValue(const TSharedPtr<FJsonObject>& Obj) override;
+        };
+
+        struct TDKCPP_API FSendEventResponse : public TDK::FTDKCppResultCommon
+        {
+            FString RequestId;
+
+            FString MD5OfMessageAttributes;
+
+            FString MD5OfMessageBody;
+
+            FString MD5OfMessageSystemAttributes;
+
+            FString MessageId;
+
+            FString SequenceNumber;
+
+            FSendEventResponse() :
+                FTDKCppResultCommon()
+            {}
+
+            FSendEventResponse(const FSendEventResponse& src) = default;
+
+            FSendEventResponse(const TSharedPtr<FJsonObject>& obj) : FSendEventResponse()
+            {
+                ReadFromValue(obj);
+            }
+
+            ~FSendEventResponse();
 
             void WriteJSON(JsonWriter& Writer) const override;
             bool ReadFromValue(const TSharedPtr<FJsonObject>& Obj) override;

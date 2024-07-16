@@ -1,12 +1,16 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-#include "TDK.h"
+#include "TDKPrivate.h"
+#include "CoreMinimal.h"
+
+#include "TDKAnalyticsAPI.h"
 
 #define LOCTEXT_NAMESPACE "FTDKModule"
 
 DEFINE_LOG_CATEGORY(LogTDK);
+DEFINE_LOG_CATEGORY(LogTDKTests);
 
-class FTDKModule : public ITDKModuleInterface
+class FTDKModule : public ITDK
 {
 	/** IModuleInterface implementation */
 	virtual void StartupModule() override;
@@ -17,6 +21,7 @@ void FTDKModule::StartupModule()
 {
 	// This code will execute after your module is loaded into memory; the exact timing is specified in the .uplugin file per-module
     
+	UTDKAnalyticsAPI::StaticClass();
 }
 
 void FTDKModule::ShutdownModule()
