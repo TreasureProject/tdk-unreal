@@ -25,8 +25,25 @@ USTRUCT(BlueprintType)
 struct TDK_API FSendEventResult : public FTDKRequestCommon
 {
     GENERATED_USTRUCT_BODY()
+
 public:
-    
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TDK | Analytics | Event Models")
+    FString RequestId;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TDK | Analytics | Event Models")
+    UTDKJsonObject* MD5OfMessageAttributes;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TDK | Analytics | Event Models")
+    FString MD5OfMessageBody;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TDK | Analytics | Event Models")
+    UTDKJsonObject* MD5OfMessageSystemAttributes;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TDK | Analytics | Event Models")
+    FString MessageId;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TDK | Analytics | Event Models")
+    FString SequenceNumber;
 };
 
 USTRUCT(BlueprintType)

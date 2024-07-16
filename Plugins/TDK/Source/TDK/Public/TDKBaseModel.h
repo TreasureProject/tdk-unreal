@@ -52,6 +52,8 @@ struct TDK_API FTDKRequestCommon
 {
     GENERATED_BODY()
 
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "TDK | Core")
+    UTDKJsonObject* Request = nullptr;
 };
 
 USTRUCT(BlueprintType)
