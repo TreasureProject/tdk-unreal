@@ -45,15 +45,15 @@ UTDKAnalyticsAPI* UTDKAnalyticsAPI::TrackCustom(FString EventName, UTDKJsonObjec
 UTDKAnalyticsAPI* UTDKAnalyticsAPI::SendEvent(FSendEventRequest Request, FDelegateOnSuccessSendEvent OnSuccess,
 	FDelegateOnFailureTDKError OnFailure)
 {
-    UTDKAnalyticsAPI* manager = NewObject<UTDKAnalyticsAPI>();
-    if (manager->IsSafeForRootSet()) manager->AddToRoot();
+    UTDKAnalyticsAPI* Manager = NewObject<UTDKAnalyticsAPI>();
+    if (Manager->IsSafeForRootSet()) Manager->AddToRoot();
     UTDKJsonObject* OutRestJsonObj = NewObject<UTDKJsonObject>();
 
-    manager->OnSuccessSendEvent = OnSuccess;
-    manager->OnFailure = OnFailure;
-    manager->OnTDKResponse.AddDynamic(manager, &UTDKAnalyticsAPI::HelperSendEvent);
+    Manager->OnSuccessSendEvent = OnSuccess;
+    Manager->OnFailure = OnFailure;
+    Manager->OnTDKResponse.AddDynamic(Manager, &UTDKAnalyticsAPI::HelperSendEvent);
 
-    manager->TDKRequestURL = "/events";
+    Manager->TDKRequestURL = "/events";
 
     UTDKRuntimeSettings* Settings = GetMutableDefault<UTDKRuntimeSettings>();
 
@@ -103,19 +103,19 @@ UTDKAnalyticsAPI* UTDKAnalyticsAPI::SendEvent(FSendEventRequest Request, FDelega
         OutputString = TEXT("[") + OutputString + TEXT("]");
     }
 
-    manager->SetRequestContent(OutputString);
+    Manager->SetRequestContent(OutputString);
 
-    return manager;
+    return Manager;
 }
 
 void UTDKAnalyticsAPI::HelperSendEvent(FTDKBaseModel Response, bool Successful)
 {
     FTDKError Error = Response.ResponseError;
-    if (Error.hasError && OnFailure.IsBound())
+    if (Error.bHasError && OnFailure.IsBound())
     {
         OnFailure.Execute(Error);
     }
-    else if (!Error.hasError && OnSuccessSendEvent.IsBound())
+    else if (!Error.bHasError && OnSuccessSendEvent.IsBound())
     {
         FSendEventResult ResultStruct = UTDKAnalyticsModelDecoder::DecodeSendEventResponse(Response.ResponseData);
         ResultStruct.Request = RequestJsonObj;
@@ -141,7 +141,7 @@ void UTDKAnalyticsAPI::OnProcessRequestComplete(FHttpRequestPtr Request, FHttpRe
         return;
     }
 
-    FTDKBaseModel myResponse;
+    FTDKBaseModel ResponseModel;
 
     // Check we have result to process further
     if (!bWasSuccessful)
@@ -149,12 +149,12 @@ void UTDKAnalyticsAPI::OnProcessRequestComplete(FHttpRequestPtr Request, FHttpRe
         UE_LOG(LogTDK, Error, TEXT("Request failed: %s"), *Request->GetURL());
 
         // Broadcast the result event
-        myResponse.ResponseError.hasError = true;
-        myResponse.ResponseError.ErrorCode = 503;
-        myResponse.ResponseError.ErrorName = "Unable to contact server";
-        myResponse.ResponseError.ErrorMessage = "Unable to contact server";
+        ResponseModel.ResponseError.bHasError = true;
+        ResponseModel.ResponseError.ErrorCode = 503;
+        ResponseModel.ResponseError.ErrorName = "Unable to contact server";
+        ResponseModel.ResponseError.ErrorMessage = "Unable to contact server";
 
-        OnTDKResponse.Broadcast(myResponse, false);
+        OnTDKResponse.Broadcast(ResponseModel, false);
 
         return;
     }
@@ -177,14 +177,15 @@ void UTDKAnalyticsAPI::OnProcessRequestComplete(FHttpRequestPtr Request, FHttpRe
         UE_LOG(LogTDK, Warning, TEXT("JSON could not be decoded!"));
 
     // Log response state
-    UE_LOG(LogTDK, Log, TEXT("Response : %s"), *ResponseContent);
+    UE_LOG(LogTDK, Log, TEXT("Response Content: %s"), *ResponseContent);
+    UE_LOG(LogTDK, Log, TEXT("Response Code: %d"), ResponseCode);
 
-    myResponse.ResponseError.decodeError(ResponseJsonObj);
-    myResponse.ResponseData = ResponseJsonObj;
+    ResponseModel.ResponseError.DecodeError(ResponseJsonObj, ResponseCode);
+    ResponseModel.ResponseData = ResponseJsonObj;
     ITDK* pfSettings = &(ITDK::Get());
 
     // Broadcast the result event
-    OnTDKResponse.Broadcast(myResponse, !myResponse.ResponseError.hasError);
+    OnTDKResponse.Broadcast(ResponseModel, !ResponseModel.ResponseError.bHasError);
     pfSettings->ModifyPendingCallCount(-1);
 }
 
