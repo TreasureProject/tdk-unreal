@@ -38,6 +38,9 @@ public:
 	UPROPERTY(EditAnywhere, config, Category = TDK)
 	FString ProdAnalyticsApiUrl;
 
+	UPROPERTY(EditAnywhere, config, Category = TDK)
+	FString ApiKey;
+
 	// ---------- Third-Web Config
 	UPROPERTY(EditAnywhere, config, Category = ThirdWeb)
 	FString DevClientId;
