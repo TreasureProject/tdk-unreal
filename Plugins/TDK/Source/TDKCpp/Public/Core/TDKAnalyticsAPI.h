@@ -37,8 +37,6 @@ namespace TDK
 		// ------------ Generated API calls
 		bool SendEvent(TDK::AnalyticsModels::FSendEventRequest Request, const FSendEventBatchDelegate& SuccessDelegate = FSendEventBatchDelegate(), const FTDKErrorDelegate& ErrorDelegate = FTDKErrorDelegate());
 
-		bool SendEventBatch(FString Payload, const FSendEventBatchDelegate& SuccessDelegate = FSendEventBatchDelegate(), const FTDKErrorDelegate& ErrorDelegate = FTDKErrorDelegate());
-
 	protected:
 		// ------------ Generated result handlers
 		void OnSendEventBatchResult(FHttpRequestPtr HttpRequest, FHttpResponsePtr HttpResponse, bool bSucceeded, FSendEventBatchDelegate SuccessDelegate, FTDKErrorDelegate ErrorDelegate);

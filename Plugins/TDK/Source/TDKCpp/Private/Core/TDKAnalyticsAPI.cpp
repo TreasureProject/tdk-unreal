@@ -53,11 +53,9 @@ bool UTDKAnalyticsAPI::TrackCustom(FString EvtName, TMap<FString, FString> EvtPr
 
 bool UTDKAnalyticsAPI::SendEvent(AnalyticsModels::FSendEventRequest Request, const FSendEventBatchDelegate& SuccessDelegate, const FTDKErrorDelegate& ErrorDelegate)
 {
-	return SendEventBatch(Request.toJSONString(), SuccessDelegate, ErrorDelegate);
-}
+	FString AuthValue = Request.AuthenticationContext.IsValid() ? Request.AuthenticationContext->GetApiKey() : GetDefault<UTDKRuntimeSettings>()->ApiKey;
 
-bool TDK::UTDKAnalyticsAPI::SendEventBatch(FString Payload, const FSendEventBatchDelegate& SuccessDelegate, const FTDKErrorDelegate& ErrorDelegate)
-{
+	FString Payload = Request.toJSONString();
 	if (Payload.StartsWith(TEXT("{")))
 	{
 		Payload = TEXT("[") + Payload + TEXT("]");
@@ -66,7 +64,7 @@ bool TDK::UTDKAnalyticsAPI::SendEventBatch(FString Payload, const FSendEventBatc
 	FString UrlPath = GetMutableDefault<UTDKRuntimeSettings>()->GetAnalyticsApiUrl();
 	UrlPath += "/events";
 
-	auto HttpRequest = TDKRequestHandler::SendRequest(UrlPath, Payload, TEXT(""), TEXT(""));
+	auto HttpRequest = TDKRequestHandler::SendRequest(UrlPath, Payload, TEXT("x-api-key"), AuthValue);
 	HttpRequest->OnProcessRequestComplete().BindRaw(this, &UTDKAnalyticsAPI::OnSendEventBatchResult, SuccessDelegate, ErrorDelegate);
 	return HttpRequest->ProcessRequest();
 }

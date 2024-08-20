@@ -15,7 +15,7 @@ namespace TDK
 {
 	namespace AnalyticsModels
 	{
-        struct TDKCPP_API FSendEventRequest : public TDK::FTDKCppBaseModel
+        struct TDKCPP_API FSendEventRequest : public FTDKCppRequestCommon
 		{
             FString SmartAccountAddress;
 
@@ -44,7 +44,7 @@ namespace TDK
             TDKCommon::FAppInfo AppInfo;
 
             FSendEventRequest() :
-                FTDKCppBaseModel(),
+                FTDKCppRequestCommon(),
                 SmartAccountAddress(),
                 ChainId(),
                 CartridgeTag(),
