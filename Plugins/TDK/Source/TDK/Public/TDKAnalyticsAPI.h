@@ -12,6 +12,7 @@
 #include "TDKAnalyticsAPI.generated.h"
 
 class UTDKJsonObject;
+class UTDKAuthenticationContext;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnTDKAnalyticsRequestCompleted, FTDKBaseModel, Response, bool, Successful);
 
@@ -24,7 +25,9 @@ public:
 	DECLARE_DYNAMIC_DELEGATE_OneParam(FDelegateOnFailureTDKError, FTDKError, Error);
 
 	UPROPERTY(BlueprintAssignable)
-	FOnTDKAnalyticsRequestCompleted OnTDKResponse;
+		FOnTDKAnalyticsRequestCompleted OnTDKResponse;
+
+	void SetCallAuthenticationContext(UTDKAuthenticationContext* InAuthenticationContext);
 
 	/** Set the Request Json object */
 	void SetRequestContent(FString ContentString);
@@ -62,6 +65,8 @@ public:
 	/** TDK Request Info */
 	FString TDKRequestURL;
 
+	bool bUseApiKey;
+
 	/** Is the response valid JSON? */
 	bool bIsValidJsonResponse;
 	FString ResponseContent;
@@ -73,6 +78,9 @@ public:
 
 
 private:
+	UPROPERTY()
+	UTDKAuthenticationContext* CallAuthenticationContext;
+
 	/** Internal bind function for the IHTTPRequest::OnProcessRequestCompleted() event */
 	void OnProcessRequestComplete(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful);
 

@@ -6,6 +6,7 @@
 #include "TDKPrivate.h"
 #include "TDKRuntimeSettings.h"
 #include "TDKCommonUtils.h"
+#include "TDKAuthenticationContext.h"
 #include "TDKAnalyticsConstants.h"
 #include "TDKTimeAPI.h"
 #include "TDKAnalyticsModels.h"
@@ -19,7 +20,13 @@ int32 UTDKAnalyticsAPI::ChainId = -1;
 
 UTDKAnalyticsAPI::UTDKAnalyticsAPI(const FObjectInitializer& ObjectInitializer)
     : Super(ObjectInitializer)
+    ,CallAuthenticationContext(nullptr)
 {
+}
+
+void UTDKAnalyticsAPI::SetCallAuthenticationContext(UTDKAuthenticationContext* InAuthenticationContext)
+{
+    CallAuthenticationContext = InAuthenticationContext;
 }
 
 void UTDKAnalyticsAPI::SetRequestContent(FString ContentString)
@@ -45,15 +52,20 @@ UTDKAnalyticsAPI* UTDKAnalyticsAPI::TrackCustom(FString EventName, UTDKJsonObjec
 UTDKAnalyticsAPI* UTDKAnalyticsAPI::SendEvent(FSendEventRequest Request, FDelegateOnSuccessSendEvent OnSuccess,
 	FDelegateOnFailureTDKError OnFailure)
 {
+    // Objects containing request data
     UTDKAnalyticsAPI* Manager = NewObject<UTDKAnalyticsAPI>();
     if (Manager->IsSafeForRootSet()) Manager->AddToRoot();
     UTDKJsonObject* OutRestJsonObj = NewObject<UTDKJsonObject>();
 
+    // Assign delegates
     Manager->OnSuccessSendEvent = OnSuccess;
     Manager->OnFailure = OnFailure;
     Manager->OnTDKResponse.AddDynamic(Manager, &UTDKAnalyticsAPI::HelperSendEvent);
 
+    // Setup the request
+    Manager->SetCallAuthenticationContext(Request.AuthenticationContext);
     Manager->TDKRequestURL = "/events";
+    Manager->bUseApiKey = true;
 
     UTDKRuntimeSettings* Settings = GetMutableDefault<UTDKRuntimeSettings>();
 
@@ -198,6 +210,15 @@ void UTDKAnalyticsAPI::Activate()
     TSharedRef<IHttpRequest> HttpRequest = FHttpModule::Get().CreateRequest();
     HttpRequest->SetURL(RequestUrl);
     HttpRequest->SetVerb(TEXT("POST"));
+
+    if (bUseApiKey)
+    {
+        FString AuthValue = CallAuthenticationContext != nullptr ? CallAuthenticationContext->GetApiKey() : GetDefault<UTDKRuntimeSettings>()->ApiKey;
+        if (!AuthValue.IsEmpty())
+        {
+            HttpRequest->SetHeader(TEXT("x-api-key"), AuthValue);
+        }
+    }
 
     // Headers
     HttpRequest->SetHeader(TEXT("Content-Type"), TEXT("application/json; charset=utf-8"));

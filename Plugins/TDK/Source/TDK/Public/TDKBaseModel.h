@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "TDKAuthenticationContext.h"
 #include "TDKBaseModel.generated.h"
 
 class UTDKJsonObject;
@@ -54,6 +55,10 @@ struct TDK_API FTDKRequestCommon
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "TDK | Core")
     UTDKJsonObject* Request = nullptr;
+
+    // An optional authentication context
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TDK | Core")
+    UTDKAuthenticationContext* AuthenticationContext = nullptr;
 };
 
 USTRUCT(BlueprintType)
