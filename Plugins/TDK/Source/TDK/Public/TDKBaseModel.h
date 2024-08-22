@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "TDKAuthenticationContext.h"
 #include "TDKBaseModel.generated.h"
 
 class UTDKJsonObject;
@@ -14,7 +15,7 @@ struct TDK_API FTDKError
 
     /** Is there an error */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TDK | Error | Models")
-	bool hasError = false;
+	bool bHasError = false;
 
     /** Holds the error code recieved from TDK. */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TDK | Error | Models")
@@ -32,7 +33,7 @@ struct TDK_API FTDKError
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TDK | Error | Models")
     FString ErrorDetails;
 
-    void decodeError(UTDKJsonObject* responseData);
+    void DecodeError(UTDKJsonObject* ResponseData, int32 ResponseCode);
 };
 
 USTRUCT(BlueprintType)
@@ -54,6 +55,10 @@ struct TDK_API FTDKRequestCommon
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "TDK | Core")
     UTDKJsonObject* Request = nullptr;
+
+    // An optional authentication context
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TDK | Core")
+    UTDKAuthenticationContext* AuthenticationContext = nullptr;
 };
 
 USTRUCT(BlueprintType)

@@ -6,7 +6,8 @@
 UTDKRuntimeSettings::UTDKRuntimeSettings() :
 	CartridgeTag(TEXT("")),
 	DevAnalyticsApiUrl(TEXT("")),
-	ProdAnalyticsApiUrl(TEXT(""))
+	ProdAnalyticsApiUrl(TEXT("")),
+	ApiKey(TEXT(""))
 {
 
 }

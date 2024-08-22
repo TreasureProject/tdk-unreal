@@ -81,34 +81,10 @@ bool TDKRequestHandler::DecodeRequest(FHttpRequestPtr HttpRequest, FHttpResponse
 bool TDKRequestHandler::DecodeError(TSharedPtr<FJsonObject> JsonObject, TDK::FTDKCppError& OutError)
 {
     // check if returned json indicates an error
-    if (JsonObject->HasField(TEXT("errorCode")))
+    if (JsonObject->HasField(TEXT("message")))
     {
         // deserialize the FPlayFabCppError object 
-        JsonObject->TryGetNumberField(TEXT("errorCode"), OutError.ErrorCode);
-        JsonObject->TryGetNumberField(TEXT("code"), OutError.HttpCode);
-        JsonObject->TryGetStringField(TEXT("status"), OutError.HttpStatus);
-        JsonObject->TryGetStringField(TEXT("error"), OutError.ErrorName);
-        JsonObject->TryGetStringField(TEXT("errorMessage"), OutError.ErrorMessage);
-
-        const TSharedPtr<FJsonObject>* obj;
-        if (JsonObject->TryGetObjectField(TEXT("errorDetails"), obj))
-        {
-            auto vals = (*obj)->Values;
-            for (auto val : vals)
-            {
-                if (val.Value->AsArray().Num() > 0)
-                {
-                    for (const auto& item : val.Value->AsArray())
-                    {
-                        OutError.ErrorDetails.Add(val.Key, item->AsString());
-                    }
-                }
-                else
-                {
-                    OutError.ErrorDetails.Add(val.Key, val.Value->AsString());
-                }
-            }
-        }
+        JsonObject->TryGetStringField(TEXT("message"), OutError.ErrorMessage);
 
         // We encountered no errors parsing the error
         return true;

@@ -5,8 +5,14 @@
 #include "TDKJsonObject.h"
 #include "TDKPrivate.h"
 
-
-void FTDKError::decodeError(UTDKJsonObject* responseData)
+void FTDKError::DecodeError(UTDKJsonObject* ResponseData, int32 ResponseCode)
 {
-    
+    // Check if we have an error
+    if (ResponseCode != 200) // We have an error
+    {
+        bHasError = true;
+
+        ErrorMessage = ResponseData->GetStringField("message");
+    }
+    else { bHasError = false; }
 }

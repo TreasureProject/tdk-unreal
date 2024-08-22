@@ -7,6 +7,7 @@
 #include "Dom/JsonValue.h"
 #include "Serialization/JsonWriter.h"
 #include "Serialization/JsonReader.h"
+#include "TDKAuthenticationContext.h"
 #include <Policies/CondensedJsonPrintPolicy.h>
 
 /**
@@ -47,6 +48,11 @@ namespace TDK
         virtual bool ReadFromValue(const TSharedPtr<FJsonValue>& value) { return false; };
 
         FString toJSONString() const;
+    };
+
+    struct TDKCPP_API FTDKCppRequestCommon : FTDKCppBaseModel
+    {
+        TSharedPtr<UTDKAuthenticationContext> AuthenticationContext; // an optional authentication context
     };
 
     struct TDKCPP_API FTDKCppResultCommon : FTDKCppBaseModel
