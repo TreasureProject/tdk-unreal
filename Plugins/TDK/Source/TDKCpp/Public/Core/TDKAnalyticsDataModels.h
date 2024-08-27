@@ -92,7 +92,7 @@ namespace TDK
             bool ReadFromValue(const TSharedPtr<FJsonObject>& Obj) override;
         };
 
-        struct TDKCPP_API FSendEventResponse : public TDK::FTDKCppResultCommon
+        struct TDKCPP_API FSendEventResponse : public FTDKCppResultCommon
         {
             FString RequestId;
 
