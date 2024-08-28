@@ -14,13 +14,13 @@
  */
 namespace TDK
 {
-	class TDKCPP_API TDKLauncherAPI
+	class TDKCPP_API UTDKLauncherAPI
 	{
 	public:
 		DECLARE_DELEGATE_OneParam(FStartSessionBatchDelegate, const LauncherModels::FStartSessionResponse&);
 
-		TDKLauncherAPI();
-		~TDKLauncherAPI();
+		UTDKLauncherAPI();
+		~UTDKLauncherAPI();
 
 		bool StartTDKSession(TDK::LauncherModels::FStartSessionRequest Request, const FStartSessionBatchDelegate& SuccessDelegate = FStartSessionBatchDelegate(), const FTDKErrorDelegate& ErrorDelegate = FTDKErrorDelegate());
 

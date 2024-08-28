@@ -50,4 +50,6 @@ public:
 
 public:
 	FString GetAnalyticsApiUrl() const;
+
+	FString GetLauncherApiUrl() const;
 };

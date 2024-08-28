@@ -19,3 +19,8 @@ FString UTDKRuntimeSettings::GetAnalyticsApiUrl() const
 	else
 		return ProdAnalyticsApiUrl;
 }
+
+FString UTDKRuntimeSettings::GetLauncherApiUrl() const
+{
+	return TEXT("http://localhost:16001")
+}

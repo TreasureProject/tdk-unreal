@@ -15,8 +15,23 @@ namespace TDK
 	{
 		struct TDKCPP_API FStartSessionRequest : public FTDKCppRequestCommon
 		{
+			FString BackendWallet;
+
+			TArray<FString> ApprovedTargets;
+
+			int64 NativeTokenLimitPerTransaction;
+
+			int32 SessionDurationSec;
+
+			int32 SessionMinDurationLeftSec;
+
 			FStartSessionRequest() :
-				FTDKCppRequestCommon()
+				FTDKCppRequestCommon(),
+				BackendWallet(),
+				ApprovedTargets(),
+				NativeTokenLimitPerTransaction(),
+				SessionDurationSec(),
+				SessionMinDurationLeftSec()
 			{}
 
 			FStartSessionRequest(const FStartSessionRequest& Src) = default;
@@ -34,6 +49,8 @@ namespace TDK
 
 		struct TDKCPP_API FStartSessionResponse : public FTDKCppResultCommon
 		{
+			bool Result;
+
 			FStartSessionResponse() :
 				FTDKCppResultCommon()
 			{}

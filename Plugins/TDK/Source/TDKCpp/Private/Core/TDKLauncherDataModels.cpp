@@ -3,6 +3,8 @@
 
 #include "Core/TDKLauncherDataModels.h"
 
+#include "TDKLauncherConstants.h"
+
 using namespace TDK;
 using namespace LauncherModels;
 
@@ -13,7 +15,24 @@ FStartSessionRequest::~FStartSessionRequest()
 
 void FStartSessionRequest::WriteJSON(JsonWriter& Writer) const
 {
+	Writer->WriteObjectStart();
 
+	Writer->WriteIdentifierPrefix(TDKCommon::TDKLauncherConstants::Backend_Wallet);
+	Writer->WriteValue(BackendWallet);
+
+	Writer->WriteIdentifierPrefix(TDKCommon::TDKLauncherConstants::Approved_Targets);
+	Writer->WriteValue(ApprovedTargets);
+
+	Writer->WriteIdentifierPrefix(TDKCommon::TDKLauncherConstants::Native_Token_Limit_Per_Transaction);
+	Writer->WriteValue(NativeTokenLimitPerTransaction);
+
+	Writer->WriteIdentifierPrefix(TDKCommon::TDKLauncherConstants::Session_Duration_Sec);
+	Writer->WriteValue(SessionDurationSec);
+
+	Writer->WriteIdentifierPrefix(TDKCommon::TDKLauncherConstants::Session_Min_Duration_Left_Sec);
+	Writer->WriteValue(SessionMinDurationLeftSec);
+
+	Writer->WriteObjectEnd();
 }
 
 bool FStartSessionRequest::ReadFromValue(const TSharedPtr<FJsonObject>& Obj)
@@ -23,13 +42,24 @@ bool FStartSessionRequest::ReadFromValue(const TSharedPtr<FJsonObject>& Obj)
 
 FStartSessionResponse::~FStartSessionResponse()
 {
+
 }
 
 void FStartSessionResponse::WriteJSON(JsonWriter& Writer) const
 {
+
 }
 
 bool FStartSessionResponse::ReadFromValue(const TSharedPtr<FJsonObject>& Obj)
 {
-	return false;
+	bool HasSucceeded = true;
+
+	const TSharedPtr<FJsonValue> EventNameValue = Obj->TryGetField(TEXT("result"));
+	if (EventNameValue.IsValid() && !EventNameValue->IsNull())
+	{
+		bool TmpValue;
+		if (EventNameValue->TryGetBool(TmpValue)) { Result = TmpValue; }
+	}
+
+	return HasSucceeded;
 }
