@@ -21,7 +21,13 @@ void FStartSessionRequest::WriteJSON(JsonWriter& Writer) const
 	Writer->WriteValue(BackendWallet);
 
 	Writer->WriteIdentifierPrefix(TDKCommon::TDKLauncherConstants::Approved_Targets);
-	Writer->WriteValue(ApprovedTargets);
+	
+	Writer->WriteArrayStart();
+
+	for(FString ApprovedTarget : ApprovedTargets)
+		Writer->WriteValue(ApprovedTarget);
+
+	Writer->WriteArrayEnd();
 
 	Writer->WriteIdentifierPrefix(TDKCommon::TDKLauncherConstants::Native_Token_Limit_Per_Transaction);
 	Writer->WriteValue(NativeTokenLimitPerTransaction);
