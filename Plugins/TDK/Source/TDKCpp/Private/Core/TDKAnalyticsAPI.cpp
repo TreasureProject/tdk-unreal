@@ -45,6 +45,11 @@ bool UTDKAnalyticsAPI::TrackCustom(FString EvtName, TMap<FString, FString> EvtPr
 	Request.DeviceInfo = TDKCommon::TDKCommonUtils::BuildDeviceInfo();
 	Request.AppInfo = TDKCommon::TDKCommonUtils::BuildAppInfo();
 
+	// TDK Auth Token Test Code
+	FString Token = TEXT("TDK Auth Token: ") + TDKCommon::TDKCommonUtils::GetTDKAuthToken();
+	if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, Token);
+	UE_LOG(LogTDKCpp, Error, TEXT("TDK Auth Token: %s"), *Token);
+
 	SendEvent(Request, SuccessDelegate, ErrorDelegate);
 
 	return false;

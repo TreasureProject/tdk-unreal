@@ -20,6 +20,7 @@ public class TDKCpp : ModuleRules
         PublicDependencyModuleNames.AddRange(new string[]{
             "Core",
             "CoreUObject",
+            "Engine",
             "HTTP",
             "Json",
             "JsonUtilities",

@@ -46,6 +46,8 @@ namespace TDKCommon
 
         static FString GetPluginName();
 
+        static FString GetTDKAuthToken();
+
     protected:
         static FString GetPluginProperty(FString PropertyName);
 	};
