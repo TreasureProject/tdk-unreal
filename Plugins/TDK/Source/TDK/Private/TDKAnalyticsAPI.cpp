@@ -20,23 +20,7 @@ int32 UTDKAnalyticsAPI::ChainId = -1;
 
 UTDKAnalyticsAPI::UTDKAnalyticsAPI(const FObjectInitializer& ObjectInitializer)
     : Super(ObjectInitializer)
-    ,CallAuthenticationContext(nullptr)
 {
-}
-
-void UTDKAnalyticsAPI::SetCallAuthenticationContext(UTDKAuthenticationContext* InAuthenticationContext)
-{
-    CallAuthenticationContext = InAuthenticationContext;
-}
-
-void UTDKAnalyticsAPI::SetRequestContent(FString ContentString)
-{
-    RequestContent = ContentString;
-}
-
-UTDKJsonObject* UTDKAnalyticsAPI::GetResponseObject()
-{
-    return ResponseJsonObj;
 }
 
 UTDKAnalyticsAPI* UTDKAnalyticsAPI::TrackCustom(FString EventName, UTDKJsonObject* EventProps, bool bHighPriority, FDelegateOnSuccessSendEvent OnSuccess, FDelegateOnFailureTDKError OnFailure)
@@ -236,13 +220,4 @@ void UTDKAnalyticsAPI::Activate()
     // Execute the request
     pfSettings->ModifyPendingCallCount(1);
     HttpRequest->ProcessRequest();
-}
-
-void UTDKAnalyticsAPI::ResetResponseData()
-{
-    if (ResponseJsonObj != nullptr)
-        ResponseJsonObj->Reset();
-    else
-        ResponseJsonObj = NewObject<UTDKJsonObject>();
-    bIsValidJsonResponse = false;
 }
