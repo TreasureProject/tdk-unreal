@@ -83,7 +83,7 @@ bool TDKRequestHandler::DecodeError(TSharedPtr<FJsonObject> JsonObject, TDK::FTD
     // check if returned json indicates an error
     if (JsonObject->HasField(TEXT("message")))
     {
-        // deserialize the FPlayFabCppError object 
+        // deserialize the FTDKCppError object 
         JsonObject->TryGetStringField(TEXT("message"), OutError.ErrorMessage);
 
         // We encountered no errors parsing the error

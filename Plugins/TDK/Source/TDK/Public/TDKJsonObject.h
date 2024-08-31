@@ -78,15 +78,15 @@ class TDK_API UTDKJsonObject : public UObject
 	// FJsonObject API Helpers (easy to use with simple Json objects)
 
     /** Get the field named FieldName as a integer */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Json")
+    UFUNCTION(BlueprintCallable, Category = "TDK | Json")
     int32 GetIntegerField(const FString& FieldName) const;
 
     /** Add a field named FieldName with Integer as value */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Json")
+    UFUNCTION(BlueprintCallable, Category = "TDK | Json")
     void SetIntegerField(const FString& FieldName, int32 Number);
 
     /** Add a field named FieldName with Int64 as value */
-    UFUNCTION(BlueprintCallable, Category = "PlayFab | Json")
+    UFUNCTION(BlueprintCallable, Category = "TDK | Json")
     void SetBigIntegerField(const FString& FieldName, int64 Number);
 
     /** Get the field named FieldName as a string. */
@@ -112,6 +112,18 @@ class TDK_API UTDKJsonObject : public UObject
     /** Set an ObjectField named FieldName and value of JsonObject */
     UFUNCTION(BlueprintCallable, Category = "TDK | Json")
     void SetObjectField(const FString& FieldName, UTDKJsonObject* JsonObject);
+
+
+    //////////////////////////////////////////////////////////////////////////
+    // Array fields helpers (uniform arrays)
+
+    /** Get the field named FieldName as a String Array. Use it only if you're sure that array is uniform! */
+    UFUNCTION(BlueprintCallable, Category = "TDK | Json")
+    TArray<FString> GetStringArrayField(const FString& FieldName);
+
+    /** Set an ObjectField named FieldName and value of String Array */
+    UFUNCTION(BlueprintCallable, Category = "TDK | Json")
+    void SetStringArrayField(const FString& FieldName, const TArray<FString>& StringArray);
 
 
 	//////////////////////////////////////////////////////////////////////////
