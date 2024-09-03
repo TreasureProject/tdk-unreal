@@ -7,7 +7,8 @@ UTDKRuntimeSettings::UTDKRuntimeSettings() :
 	CartridgeTag(TEXT("")),
 	DevAnalyticsApiUrl(TEXT("")),
 	ProdAnalyticsApiUrl(TEXT("")),
-	ApiKey(TEXT(""))
+	ApiKey(TEXT("")),
+	LauncherApiUrl(TEXT("http://localhost:16001"))
 {
 
 }
@@ -22,5 +23,5 @@ FString UTDKRuntimeSettings::GetAnalyticsApiUrl() const
 
 FString UTDKRuntimeSettings::GetLauncherApiUrl() const
 {
-	return TEXT("http://localhost:16001");
+	return LauncherApiUrl;
 }
