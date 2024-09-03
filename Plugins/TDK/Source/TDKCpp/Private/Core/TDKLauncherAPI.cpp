@@ -30,6 +30,12 @@ bool UTDKLauncherAPI::StartTDKSession(FStartSessionRequest Request, const FStart
 
 void UTDKLauncherAPI::OnStartSessionBatchResult(FHttpRequestPtr HttpRequest, FHttpResponsePtr HttpResponse, bool bSucceeded, FStartSessionBatchDelegate SuccessDelegate, FTDKErrorDelegate ErrorDelegate)
 {
+	if (HttpResponse == nullptr || !HttpResponse.IsValid())
+	{
+		ErrorDelegate.ExecuteIfBound(FTDKCppError());
+		return;
+	}
+
 	UE_LOG(LogTDKCpp, Warning, TEXT("Response: %s %d"), *HttpResponse->GetContentAsString(), HttpResponse->GetResponseCode());
 
 	LauncherModels::FStartSessionResponse OutResult;
