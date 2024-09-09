@@ -19,6 +19,10 @@ class TDK_API UTDKLauncherModelDecoder : public UBlueprintFunctionLibrary
 
 public:
 	/** Decode the StartSession response object*/
-	UFUNCTION(BlueprintCallable, Category = "TDK | Client | Authentication Models")
+	UFUNCTION(BlueprintCallable, Category = "TDK | Launcher | Response Models")
 	static FStartSessionResult DecodeStartSessionResponse(UTDKJsonObject* Response);
+
+	/** Decode the StartSession error response object*/
+	UFUNCTION(BlueprintCallable, Category = "TDK | Launcher | Response Models")
+	static FTDKError DecodeStartSessionError(UTDKJsonObject* Response);
 };

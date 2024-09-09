@@ -13,3 +13,13 @@ FStartSessionResult UTDKLauncherModelDecoder::DecodeStartSessionResponse(UTDKJso
 
     return Result;
 }
+
+FTDKError UTDKLauncherModelDecoder::DecodeStartSessionError(UTDKJsonObject* Response)
+{
+    FTDKError Error;
+
+    Error.bHasError = true;
+    Error.ErrorMessage = !(Response->HasField("error")) ? TEXT("") : Response->GetStringField("error");
+
+    return Error;
+}
