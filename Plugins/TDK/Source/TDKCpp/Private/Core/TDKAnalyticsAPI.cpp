@@ -3,7 +3,7 @@
 
 #include "TDKAnalyticsAPI.h"
 
-#include "Interfaces/IPluginManager.h"
+//#include "Interfaces/IPluginManager.h"
 
 #include "TDKCpp.h"
 #include "TDKRuntimeSettings.h"
@@ -45,11 +45,6 @@ bool UTDKAnalyticsAPI::TrackCustom(FString EvtName, TMap<FString, FString> EvtPr
 	Request.DeviceInfo = TDKCommon::TDKCommonUtils::BuildDeviceInfo();
 	Request.AppInfo = TDKCommon::TDKCommonUtils::BuildAppInfo();
 
-	// TDK Auth Token Test Code
-	FString Token = TEXT("TDK Auth Token: ") + TDKCommon::TDKCommonUtils::GetTDKAuthToken();
-	if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, Token);
-	UE_LOG(LogTDKCpp, Error, TEXT("TDK Auth Token: %s"), *Token);
-
 	SendEvent(Request, SuccessDelegate, ErrorDelegate);
 
 	return false;
@@ -75,13 +70,19 @@ bool UTDKAnalyticsAPI::SendEvent(AnalyticsModels::FSendEventRequest Request, con
 
 void UTDKAnalyticsAPI::OnSendEventBatchResult(FHttpRequestPtr HttpRequest, FHttpResponsePtr HttpResponse, bool bSucceeded, FSendEventBatchDelegate SuccessDelegate, FTDKErrorDelegate ErrorDelegate)
 {
-	UE_LOG(LogTDKCpp, Warning, TEXT("Request Url: %s"), *HttpRequest->GetURL());
+	//UE_LOG(LogTDKCpp, Warning, TEXT("Request Url: %s"), *HttpRequest->GetURL());
 	
-	FJsonSerializableArray Headers = HttpRequest->GetAllHeaders();
+	if (HttpResponse == nullptr || !HttpResponse.IsValid())
+	{
+		ErrorDelegate.ExecuteIfBound(FTDKCppError());
+		return;
+	}
+	
+	/*FJsonSerializableArray Headers = HttpRequest->GetAllHeaders();
 	for (auto Header : Headers)
 	{
 		UE_LOG(LogTDKCpp, Warning, TEXT("Header Request: %s"), *Header);
-	}
+	}*/
 
 	UE_LOG(LogTDKCpp, Warning, TEXT("Response: %s %d"), *HttpResponse->GetContentAsString(), HttpResponse->GetResponseCode());
 
