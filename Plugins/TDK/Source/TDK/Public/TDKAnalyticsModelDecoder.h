@@ -18,6 +18,6 @@ class TDK_API UTDKAnalyticsModelDecoder : public UBlueprintFunctionLibrary
 
 public:
 	/** Decode the SendEvent response object*/
-	UFUNCTION(BlueprintCallable, Category = "TDK | Client | Authentication Models")
+	UFUNCTION(BlueprintCallable, Category = "TDK | Analytics | Authentication Models")
 	static FSendEventResult DecodeSendEventResponse(UTDKJsonObject* Response);
 };

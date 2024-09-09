@@ -35,9 +35,12 @@ public:
 	//////////////////////////////////////////////////////////////////////////
 	DECLARE_DYNAMIC_DELEGATE_OneParam(FDelegateOnSuccessStartSession, FStartSessionResult, Result);
 
-	UFUNCTION(BlueprintCallable, Category = "TDK | Launcher | Events ", meta = (BlueprintInternalUseOnly = "true"))
+	UFUNCTION(BlueprintCallable, Category = "TDK | Launcher ", meta = (BlueprintInternalUseOnly = "true"))
 	static UTDKLauncherAPI* StartSession(FStartSessionRequest Request, FDelegateOnSuccessStartSession OnSuccess,
 		FDelegateOnFailureTDKError OnFailure);
+
+	UFUNCTION(BlueprintCallable, Category = "TDK | Launcher ")
+	static FString GetAuthToken();
 
 	// Implements FOnTDKLauncherRequestCompleted
 	UFUNCTION(BlueprintCallable, Category = "TDK | Launcher | Authentication ", meta = (BlueprintInternalUseOnly = "true"))

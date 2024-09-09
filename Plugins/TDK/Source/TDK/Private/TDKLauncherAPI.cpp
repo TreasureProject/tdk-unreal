@@ -4,6 +4,7 @@
 #include "TDKLauncherAPI.h"
 
 #include "TDKPrivate.h"
+#include "TDKCommonUtils.h"
 #include "TDKLauncherConstants.h"
 #include "TDKLauncherModelDecoder.h"
 
@@ -70,6 +71,11 @@ UTDKLauncherAPI* UTDKLauncherAPI::StartSession(FStartSessionRequest Request, FDe
     Manager->SetRequestContent(OutputString);
 
     return Manager;
+}
+
+FString UTDKLauncherAPI::GetAuthToken()
+{
+    return TDKCommon::TDKCommonUtils::GetTDKAuthToken();
 }
 
 void UTDKLauncherAPI::HelperStartSession(FTDKBaseModel Response, bool Successful)
