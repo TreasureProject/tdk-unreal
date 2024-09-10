@@ -19,10 +19,12 @@ namespace TDK
     }
 
     class UTDKAnalyticsAPI;
+    class UTDKLauncherAPI;
     class UTDKTimeAPI;
 }
 
 typedef TSharedPtr<class TDK::UTDKAnalyticsAPI> TDKAnalyticsPtr;
+typedef TSharedPtr<class TDK::UTDKLauncherAPI> TDKLauncherPtr;
 typedef TSharedPtr<class TDK::UTDKTimeAPI> TDKTimePtr;
 
 /**
@@ -59,5 +61,6 @@ public:
     }
 
     virtual TDKAnalyticsPtr GetAnalyticsAPI() const = 0;
+    virtual TDKLauncherPtr GetLauncherAPI() const = 0;
     virtual TDKTimePtr GetTimeAPI() const = 0;
 };

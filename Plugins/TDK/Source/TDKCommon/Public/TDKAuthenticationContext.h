@@ -22,7 +22,7 @@ public:
 	}
 
     // Get the API key. These keys can be used in request authentication.
-    UFUNCTION(BlueprintCallable, BlueprintPure, Category = "PlayFab | Core")
+    UFUNCTION(BlueprintCallable, BlueprintPure, Category = "TDK | Core")
     FString& GetApiKey()
     {
         return ApiKey;

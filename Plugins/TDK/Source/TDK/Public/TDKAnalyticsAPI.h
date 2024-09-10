@@ -4,11 +4,10 @@
 
 #include "CoreMinimal.h"
 
-#include "Http.h"
-#include "Net/OnlineBlueprintCallProxyBase.h"
+#include "TDKBaseAPI.h"
 
 #include "TDKAnalyticsModels.h"
-#include "TDKJsonObject.h"
+
 #include "TDKAnalyticsAPI.generated.h"
 
 class UTDKJsonObject;
@@ -17,7 +16,7 @@ class UTDKAuthenticationContext;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnTDKAnalyticsRequestCompleted, FTDKBaseModel, Response, bool, Successful);
 
 UCLASS(Blueprintable, BlueprintType)
-class TDK_API UTDKAnalyticsAPI : public UOnlineBlueprintCallProxyBase
+class TDK_API UTDKAnalyticsAPI : public UTDKBaseAPI
 {
 	GENERATED_UCLASS_BODY()
 
@@ -26,17 +25,6 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 		FOnTDKAnalyticsRequestCompleted OnTDKResponse;
-
-	void SetCallAuthenticationContext(UTDKAuthenticationContext* InAuthenticationContext);
-
-	/** Set the Request Json object */
-	void SetRequestContent(FString ContentString);
-
-	/** Get the Response Json object */
-	UTDKJsonObject* GetResponseObject();
-
-	/** Reset saved response data */
-	void ResetResponseData();
 
 	/** UOnlineBlueprintCallProxyBase interface */
 	virtual void Activate() override;
@@ -57,48 +45,18 @@ public:
 	static UTDKAnalyticsAPI* SendEvent(FSendEventRequest Request, FDelegateOnSuccessSendEvent OnSuccess,
 		FDelegateOnFailureTDKError OnFailure);
 
-	// // Implements FOnTDKAnalyticsRequestCompleted
-	UFUNCTION(BlueprintCallable, Category = "TDK | Client | Authentication ", meta = (BlueprintInternalUseOnly = "true"))
+	// Implements FOnTDKAnalyticsRequestCompleted
+	UFUNCTION(BlueprintCallable, Category = "TDK | Analytics | Authentication ", meta = (BlueprintInternalUseOnly = "true"))
 	void HelperSendEvent(FTDKBaseModel Response, bool Successful);
-
-
-	/** TDK Request Info */
-	FString TDKRequestURL;
 
 	bool bUseApiKey;
 
-	/** Is the response valid JSON? */
-	bool bIsValidJsonResponse;
-	FString ResponseContent;
-	int32 ResponseCode;
-	UObject* mCustomData;
-
 	FDelegateOnFailureTDKError OnFailure;
 	FDelegateOnSuccessSendEvent OnSuccessSendEvent;
-
-
-private:
-	UPROPERTY()
-	UTDKAuthenticationContext* CallAuthenticationContext;
-
-	/** Internal bind function for the IHTTPRequest::OnProcessRequestCompleted() event */
-	void OnProcessRequestComplete(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful);
+	
 
 protected:
-	/** Contest of Request stored as a String encoded UTF8*/
-	FString RequestContent;
-
-	/** Internal request data stored as JSON */
-	UPROPERTY()
-	UTDKJsonObject* RequestJsonObj;
-
-	/** Response data stored as JSON */
-	UPROPERTY()
-	UTDKJsonObject* ResponseJsonObj;
-
-	/** Mapping of header section to values. Used to generate final header string for request */
-	TMap<FString, FString> RequestHeaders;
-
+	void OnProcessRequestComplete(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful) override;
 
 	//////////////////////////////////////////////////////////////////////////
 	// TDK

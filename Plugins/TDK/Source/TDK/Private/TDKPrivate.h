@@ -15,4 +15,4 @@
 DECLARE_LOG_CATEGORY_EXTERN(LogTDK, Log, All);
 DECLARE_LOG_CATEGORY_EXTERN(LogTDKTests, Log, All);
 
-#include "TDK/Public/TDK.h"
+#include "TDK/Public/ITDK.h"

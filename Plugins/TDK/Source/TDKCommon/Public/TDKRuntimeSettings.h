@@ -41,6 +41,9 @@ public:
 	UPROPERTY(EditAnywhere, config, Category = TDK)
 	FString ApiKey;
 
+	UPROPERTY(EditAnywhere, config, Category = TDK)
+	FString LauncherApiUrl;
+
 	// ---------- Third-Web Config
 	UPROPERTY(EditAnywhere, config, Category = ThirdWeb)
 	FString DevClientId;
@@ -50,4 +53,6 @@ public:
 
 public:
 	FString GetAnalyticsApiUrl() const;
+
+	FString GetLauncherApiUrl() const;
 };

@@ -3,7 +3,7 @@
 
 #include "TDKAnalyticsAPI.h"
 
-#include "Interfaces/IPluginManager.h"
+//#include "Interfaces/IPluginManager.h"
 
 #include "TDKCpp.h"
 #include "TDKRuntimeSettings.h"
@@ -12,7 +12,6 @@
 
 #include "Core/TDKRequestHandler.h"
 #include "Core/TDKTimeAPI.h"
-#include "TDKAnalyticsAPI.h"
 
 #include "Json.h"
 #include "JsonUtilities.h"
@@ -71,13 +70,19 @@ bool UTDKAnalyticsAPI::SendEvent(AnalyticsModels::FSendEventRequest Request, con
 
 void UTDKAnalyticsAPI::OnSendEventBatchResult(FHttpRequestPtr HttpRequest, FHttpResponsePtr HttpResponse, bool bSucceeded, FSendEventBatchDelegate SuccessDelegate, FTDKErrorDelegate ErrorDelegate)
 {
-	UE_LOG(LogTDKCpp, Warning, TEXT("Request Url: %s"), *HttpRequest->GetURL());
+	//UE_LOG(LogTDKCpp, Warning, TEXT("Request Url: %s"), *HttpRequest->GetURL());
 	
-	FJsonSerializableArray Headers = HttpRequest->GetAllHeaders();
+	if (HttpResponse == nullptr || !HttpResponse.IsValid())
+	{
+		ErrorDelegate.ExecuteIfBound(FTDKCppError());
+		return;
+	}
+	
+	/*FJsonSerializableArray Headers = HttpRequest->GetAllHeaders();
 	for (auto Header : Headers)
 	{
 		UE_LOG(LogTDKCpp, Warning, TEXT("Header Request: %s"), *Header);
-	}
+	}*/
 
 	UE_LOG(LogTDKCpp, Warning, TEXT("Response: %s %d"), *HttpResponse->GetContentAsString(), HttpResponse->GetResponseCode());
 

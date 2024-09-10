@@ -260,3 +260,38 @@ void UTDKJsonObject::SetObjectField(const FString& FieldName, UTDKJsonObject* Js
 
     JsonObj->SetObjectField(FieldName, JsonObject->GetRootObject());
 }
+
+TArray<FString> UTDKJsonObject::GetStringArrayField(const FString& FieldName)
+{
+    TArray<FString> StringArray;
+
+    if (!JsonObj.IsValid())
+    {
+        return StringArray;
+    }
+
+    TArray<TSharedPtr<FJsonValue> > JsonArrayValues = JsonObj->GetArrayField(FieldName);
+    for (TArray<TSharedPtr<FJsonValue> >::TConstIterator It(JsonArrayValues); It; ++It)
+    {
+        StringArray.Add((*It)->AsString());
+    }
+
+    return StringArray;
+}
+
+void UTDKJsonObject::SetStringArrayField(const FString& FieldName, const TArray<FString>& StringArray)
+{
+    if (!JsonObj.IsValid())
+    {
+        return;
+    }
+
+    TArray< TSharedPtr<FJsonValue> > EntriesArray;
+
+    for (auto String : StringArray)
+    {
+        EntriesArray.Add(MakeShareable(new FJsonValueString(String)));
+    }
+
+    JsonObj->SetArrayField(FieldName, EntriesArray);
+}

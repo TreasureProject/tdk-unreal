@@ -17,7 +17,7 @@ class TDK_API UTDKAnalyticsModelDecoder : public UBlueprintFunctionLibrary
 	GENERATED_BODY()
 
 public:
-	/** Decode the LoginResult response object*/
-	UFUNCTION(BlueprintCallable, Category = "PlayFab | Client | Authentication Models")
+	/** Decode the SendEvent response object*/
+	UFUNCTION(BlueprintCallable, Category = "TDK | Analytics | Authentication Models")
 	static FSendEventResult DecodeSendEventResponse(UTDKJsonObject* Response);
 };

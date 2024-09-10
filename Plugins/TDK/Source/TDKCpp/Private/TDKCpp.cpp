@@ -3,6 +3,7 @@
 #include "TDKCpp.h"
 
 #include "Core/TDKAnalyticsAPI.h"
+#include "Core/TDKLauncherAPI.h"
 #include "Core/TDKTimeAPI.h"
 
 DEFINE_LOG_CATEGORY(LogTDKCpp);
@@ -15,9 +16,11 @@ class FTDKCppModule : public ITDKCppModuleInterface
 
 	// Inherited via ITDKCppModuleInterface
 	TDKAnalyticsPtr GetAnalyticsAPI() const override { return AnalyticsAPI; }
+	TDKLauncherPtr GetLauncherAPI() const override { return LauncherAPI; }
 	TDKTimePtr GetTimeAPI() const override { return TimeAPI; }
 
 	TDKAnalyticsPtr AnalyticsAPI;
+	TDKLauncherPtr LauncherAPI;
 	TDKTimePtr TimeAPI;
 };
 
@@ -29,6 +32,7 @@ void FTDKCppModule::StartupModule()
 	TimeAPI = MakeShareable(new TDK::UTDKTimeAPI());
 
 	AnalyticsAPI = MakeShareable(new TDK::UTDKAnalyticsAPI());
+	LauncherAPI = MakeShareable(new TDK::UTDKLauncherAPI());
 }
 
 void FTDKCppModule::ShutdownModule()

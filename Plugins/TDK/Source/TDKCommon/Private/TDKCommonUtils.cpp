@@ -140,7 +140,19 @@ FString TDKCommonUtils::GetPluginName()
 	return TDKCommonUtils::GetPluginProperty(TEXT("FriendlyName"));
 }
 
-FString TDKCommon::TDKCommonUtils::GetPluginProperty(FString PropertyName)
+FString TDKCommonUtils::GetTDKAuthToken()
+{
+	FString Token, Param;
+
+	if (FParse::Value(FCommandLine::Get(), TEXT("-tdk-auth-token="), Param))
+	{
+		Token = Param;
+	}
+
+	return Token;
+}
+
+FString TDKCommonUtils::GetPluginProperty(FString PropertyName)
 {
 	// Define the path to the plugin descriptor file
 	FString PluginDescriptorFilePath = FPaths::ProjectPluginsDir() / TEXT("TDK/TDK.uplugin");
