@@ -83,8 +83,15 @@ void UTDKLauncherAPI::HelperStartSession(FTDKBaseModel Response, bool Successful
     FTDKError Error = Response.ResponseError;
     if (Error.bHasError && OnFailure.IsBound())
     {
-        FTDKError CustomError = UTDKLauncherModelDecoder::DecodeStartSessionError(Response.ResponseData);
-        OnFailure.Execute(CustomError);
+        if (Response.ResponseData)
+        {
+            FTDKError CustomError = UTDKLauncherModelDecoder::DecodeStartSessionError(Response.ResponseData);
+            OnFailure.Execute(CustomError);
+        }
+        else
+        {
+            OnFailure.Execute(Error);
+        }
     }
     else if (!Error.bHasError && OnSuccessStartSession.IsBound())
     {
