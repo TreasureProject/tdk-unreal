@@ -4,9 +4,9 @@
 #include "TDKRuntimeSettings.h"
 
 UTDKRuntimeSettings::UTDKRuntimeSettings() :
-	CartridgeTag(TEXT("")),
-	DevAnalyticsApiUrl(TEXT("")),
-	ProdAnalyticsApiUrl(TEXT("")),
+	CartridgeTag(TEXT("harness")),
+	DevAnalyticsApiUrl(TEXT("https://darkmatter.spellcaster.lol/ingress")),
+	ProdAnalyticsApiUrl(TEXT("https://darkmatter.treasure.lol/ingress")),
 	ApiKey(TEXT("")),
 	LauncherApiUrl(TEXT("http://localhost:16001"))
 {
