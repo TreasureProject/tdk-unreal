@@ -31,6 +31,12 @@ public:
 
 	UPROPERTY(EditAnywhere, config, Category = TDK)
 	FString CartridgeTag;
+
+	UPROPERTY(EditAnywhere, config, Category = TDK)
+	FString CartridgeName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = TDK)
+	UTexture2D* CartridgeIcon;
 	
 	UPROPERTY(EditAnywhere, config, Category = TDK)
 	FString DevAnalyticsApiUrl;

@@ -84,7 +84,7 @@ void UTDKAnalyticsAPI::OnSendEventBatchResult(FHttpRequestPtr HttpRequest, FHttp
 		UE_LOG(LogTDKCpp, Warning, TEXT("Header Request: %s"), *Header);
 	}*/
 
-	UE_LOG(LogTDKCpp, Warning, TEXT("Response: %s %d"), *HttpResponse->GetContentAsString(), HttpResponse->GetResponseCode());
+	//UE_LOG(LogTDKCpp, Warning, TEXT("Response: %s %d"), *HttpResponse->GetContentAsString(), HttpResponse->GetResponseCode());
 
 	AnalyticsModels::FSendEventResponse OutResult;
 	FTDKCppError ErrorResult;
