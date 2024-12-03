@@ -18,7 +18,7 @@ class TDKCOMMON_API UTDKAuthenticationContext : public UObject
 public:
 	UTDKAuthenticationContext()
 	{
-		ApiKey = GetDefault<UTDKRuntimeSettings>()->ApiKey;
+        ApiKey = GetDefault<UTDKRuntimeSettings>()->GetApiKey();
 	}
 
     // Get the API key. These keys can be used in request authentication.

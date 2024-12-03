@@ -52,7 +52,7 @@ bool UTDKAnalyticsAPI::TrackCustom(FString EvtName, TMap<FString, FString> EvtPr
 
 bool UTDKAnalyticsAPI::SendEvent(AnalyticsModels::FSendEventRequest Request, const FSendEventBatchDelegate& SuccessDelegate, const FTDKErrorDelegate& ErrorDelegate)
 {
-	FString AuthValue = Request.AuthenticationContext.IsValid() ? Request.AuthenticationContext->GetApiKey() : GetDefault<UTDKRuntimeSettings>()->ApiKey;
+	FString AuthValue = Request.AuthenticationContext.IsValid() ? Request.AuthenticationContext->GetApiKey() : GetDefault<UTDKRuntimeSettings>()->GetApiKey();
 
 	FString Payload = Request.toJSONString();
 	if (Payload.StartsWith(TEXT("{")))

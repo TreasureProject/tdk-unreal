@@ -29,8 +29,32 @@ FString UTDKBlueprintUtils::GetCartridgeName()
 	return Settings->CartridgeName;
 }
 
+FString UTDKBlueprintUtils::GetEcosystemPartnerId()
+{
+	UTDKRuntimeSettings* Settings = GetMutableDefault<UTDKRuntimeSettings>();
+	return Settings->EcosystemPartnerId;
+}
+
 UTexture2D* UTDKBlueprintUtils::GetCartridgeIcon()
 {
 	UTDKRuntimeSettings* Settings = GetMutableDefault<UTDKRuntimeSettings>();
 	return Settings->CartridgeIcon;
+}
+
+FString UTDKBlueprintUtils::GetFactoryAddress()
+{
+    UTDKRuntimeSettings* Settings = GetMutableDefault<UTDKRuntimeSettings>();
+    return Settings->FactoryAddress;
+}
+
+int64 UTDKBlueprintUtils::GetDevChainId()
+{
+    UTDKRuntimeSettings* Settings = GetMutableDefault<UTDKRuntimeSettings>();
+    return Settings->DevChainId;
+}
+
+int64 UTDKBlueprintUtils::GetProdChainId()
+{
+    UTDKRuntimeSettings* Settings = GetMutableDefault<UTDKRuntimeSettings>();
+    return Settings->ProdChainId;
 }

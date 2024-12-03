@@ -197,7 +197,7 @@ void UTDKAnalyticsAPI::Activate()
 
     if (bUseApiKey)
     {
-        FString AuthValue = CallAuthenticationContext != nullptr ? CallAuthenticationContext->GetApiKey() : GetDefault<UTDKRuntimeSettings>()->ApiKey;
+        FString AuthValue = CallAuthenticationContext != nullptr ? CallAuthenticationContext->GetApiKey() : GetDefault<UTDKRuntimeSettings>()->GetApiKey();
         if (!AuthValue.IsEmpty())
         {
             HttpRequest->SetHeader(TEXT("x-api-key"), AuthValue);

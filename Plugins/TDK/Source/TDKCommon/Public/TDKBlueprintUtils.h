@@ -25,5 +25,17 @@ public:
 	static FString GetCartridgeName();
 
 	UFUNCTION(BlueprintPure)
+	static FString GetEcosystemPartnerId();
+
+	UFUNCTION(BlueprintPure)
 	static UTexture2D* GetCartridgeIcon();
+
+    UFUNCTION(BlueprintPure)
+    static FString GetFactoryAddress();
+
+    UFUNCTION(BlueprintPure)
+    static int64 GetDevChainId();
+
+    UFUNCTION(BlueprintPure)
+    static int64 GetProdChainId();
 };
