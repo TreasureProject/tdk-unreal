@@ -111,4 +111,6 @@ public:
 	FString GetApiKey() const;
 
 	FString GetLauncherApiUrl() const;
+
+	int64 GetChainId() const;
 };

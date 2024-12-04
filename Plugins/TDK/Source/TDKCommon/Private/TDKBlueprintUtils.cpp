@@ -47,14 +47,8 @@ FString UTDKBlueprintUtils::GetFactoryAddress()
     return Settings->FactoryAddress;
 }
 
-int64 UTDKBlueprintUtils::GetDevChainId()
+int64 UTDKBlueprintUtils::GetChainId()
 {
     UTDKRuntimeSettings* Settings = GetMutableDefault<UTDKRuntimeSettings>();
-    return Settings->DevChainId;
-}
-
-int64 UTDKBlueprintUtils::GetProdChainId()
-{
-    UTDKRuntimeSettings* Settings = GetMutableDefault<UTDKRuntimeSettings>();
-    return Settings->ProdChainId;
+	return Settings->GetChainId();
 }

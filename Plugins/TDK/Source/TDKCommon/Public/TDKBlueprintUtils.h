@@ -34,8 +34,5 @@ public:
     static FString GetFactoryAddress();
 
     UFUNCTION(BlueprintPure)
-    static int64 GetDevChainId();
-
-    UFUNCTION(BlueprintPure)
-    static int64 GetProdChainId();
+    static int64 GetChainId();
 };

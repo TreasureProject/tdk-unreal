@@ -40,3 +40,11 @@ FString UTDKRuntimeSettings::GetLauncherApiUrl() const
 {
 	return LauncherApiUrl;
 }
+
+int64 UTDKRuntimeSettings::GetChainId() const
+{
+	if (Env == EEnv::DEV)
+		return DevChainId;
+	else
+		return ProdChainId;
+}
