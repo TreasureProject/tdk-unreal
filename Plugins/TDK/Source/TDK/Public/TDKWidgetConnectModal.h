@@ -13,5 +13,15 @@ UCLASS()
 class TDK_API UTDKWidgetConnectModal : public UUserWidget
 {
 	GENERATED_BODY()
+
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status")
+	bool IsConnected;
 	
+public:
+	UFUNCTION(BlueprintNativeEvent, BlueprintCosmetic, Category = "Status")
+	bool IsWalletConnect();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCosmetic, Category = "Status")
+	void Disconnect();
 };

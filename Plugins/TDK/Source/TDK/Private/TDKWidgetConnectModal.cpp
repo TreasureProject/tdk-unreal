@@ -3,3 +3,12 @@
 
 #include "TDKWidgetConnectModal.h"
 
+bool UTDKWidgetConnectModal::IsWalletConnect_Implementation()
+{
+	return IsConnected;
+}
+
+void UTDKWidgetConnectModal::Disconnect_Implementation()
+{
+	IsConnected = false;
+}
