@@ -19,9 +19,9 @@ protected:
 	bool IsConnected;
 	
 public:
-	UFUNCTION(BlueprintNativeEvent, BlueprintCosmetic, Category = "Status")
+	UFUNCTION(BlueprintNativeEvent, BlueprintPure, Category = "Status")
 	bool IsWalletConnect();
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCosmetic, Category = "Status")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Status")
 	void Disconnect();
 };
