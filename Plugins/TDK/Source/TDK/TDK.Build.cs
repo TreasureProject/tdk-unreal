@@ -23,7 +23,8 @@ public class TDK : ModuleRules
                 "Json",
                 "JsonUtilities",
                 "TDKCommon",
-                "TDKCpp"
+                "TDKCpp",
+                "UMG"
             }
         );
 	}

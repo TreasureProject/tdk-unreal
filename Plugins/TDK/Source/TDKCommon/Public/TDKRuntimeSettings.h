@@ -25,34 +25,92 @@ class TDKCOMMON_API UTDKRuntimeSettings : public UObject
 public:
 	UTDKRuntimeSettings();
 
-	// ---------- TDK Config
-	UPROPERTY(EditAnywhere, config, Category = TDK)
+	// ---------------- General ----------------- //
+
+	UPROPERTY(EditAnywhere, config, Category = General)
 	TEnumAsByte<EEnv> Env;
 
-	UPROPERTY(EditAnywhere, config, Category = TDK)
+	UPROPERTY(EditAnywhere, config, Category = General)
 	FString CartridgeTag;
-	
-	UPROPERTY(EditAnywhere, config, Category = TDK)
+
+	UPROPERTY(EditAnywhere, config, Category = General)
+	FString CartridgeName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = General)
+	UTexture2D* CartridgeIcon;
+
+	UPROPERTY(EditAnywhere, config, Category = General)
+	FString ProdApiUrl;
+
+	UPROPERTY(EditAnywhere, config, Category = General)
+	FString DevApiUrl;
+
+	UPROPERTY(EditAnywhere, config, Category = General)
+	FString ClientId;
+
+	UPROPERTY(EditAnywhere, config, Category = General)
+	FString EcosystemId;
+
+	UPROPERTY(EditAnywhere, config, Category = General)
+	FString EcosystemPartnerId;
+
+	UPROPERTY(EditAnywhere, config, Category = General)
+	FString DevApiKey;
+
+	UPROPERTY(EditAnywhere, config, Category = General)
+	FString ProdApiKey;
+
+
+	// ----------------- Connect ------------------- //
+
+	UPROPERTY(EditAnywhere, config, Category = Connect)
+	FString FactoryAddress;
+
+    UPROPERTY(EditAnywhere, config, Category = Connect)
+    int64 DevChainId;
+
+    UPROPERTY(EditAnywhere, config, Category = Connect)
+    int64 ProdChainId;
+
+	UPROPERTY(EditAnywhere, config, Category = Connect)
+	int32 SessionDurationSec;
+
+	UPROPERTY(EditAnywhere, config, Category = Connect)
+	int32 SessionMinDurationLeftSec;
+
+	UPROPERTY(EditAnywhere, config, Category = "Connect|SessionOptions")
+	FString ChainIdentifier;
+
+	UPROPERTY(EditAnywhere, config, Category = "Connect|SessionOptions")
+	FString BackendWallet;
+
+	UPROPERTY(EditAnywhere, config, Category = "Connect|SessionOptions")
+	TArray<FString> CallTargets;
+
+	UPROPERTY(EditAnywhere, config, Category = "Connect|SessionOptions")
+	FString NativeTokenLimitPerTransaction;
+
+
+	// ---------------- Analytics ------------------- //
+
+	UPROPERTY(EditAnywhere, config, Category = Analytics)
 	FString DevAnalyticsApiUrl;
 
-	UPROPERTY(EditAnywhere, config, Category = TDK)
+	UPROPERTY(EditAnywhere, config, Category = Analytics)
 	FString ProdAnalyticsApiUrl;
 
-	UPROPERTY(EditAnywhere, config, Category = TDK)
-	FString ApiKey;
 
-	UPROPERTY(EditAnywhere, config, Category = TDK)
+	// ---------------- Launcher ------------------- //
+
+	UPROPERTY(EditAnywhere, config, Category = Launcher)
 	FString LauncherApiUrl;
-
-	// ---------- Third-Web Config
-	UPROPERTY(EditAnywhere, config, Category = ThirdWeb)
-	FString DevClientId;
-
-	UPROPERTY(EditAnywhere, config, Category = ThirdWeb)
-	FString ProdClientId;
 
 public:
 	FString GetAnalyticsApiUrl() const;
 
+	FString GetApiKey() const;
+
 	FString GetLauncherApiUrl() const;
+
+	int64 GetChainId() const;
 };

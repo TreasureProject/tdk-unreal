@@ -52,7 +52,7 @@ bool UTDKAnalyticsAPI::TrackCustom(FString EvtName, TMap<FString, FString> EvtPr
 
 bool UTDKAnalyticsAPI::SendEvent(AnalyticsModels::FSendEventRequest Request, const FSendEventBatchDelegate& SuccessDelegate, const FTDKErrorDelegate& ErrorDelegate)
 {
-	FString AuthValue = Request.AuthenticationContext.IsValid() ? Request.AuthenticationContext->GetApiKey() : GetDefault<UTDKRuntimeSettings>()->ApiKey;
+	FString AuthValue = Request.AuthenticationContext.IsValid() ? Request.AuthenticationContext->GetApiKey() : GetDefault<UTDKRuntimeSettings>()->GetApiKey();
 
 	FString Payload = Request.toJSONString();
 	if (Payload.StartsWith(TEXT("{")))
@@ -84,7 +84,7 @@ void UTDKAnalyticsAPI::OnSendEventBatchResult(FHttpRequestPtr HttpRequest, FHttp
 		UE_LOG(LogTDKCpp, Warning, TEXT("Header Request: %s"), *Header);
 	}*/
 
-	UE_LOG(LogTDKCpp, Warning, TEXT("Response: %s %d"), *HttpResponse->GetContentAsString(), HttpResponse->GetResponseCode());
+	//UE_LOG(LogTDKCpp, Warning, TEXT("Response: %s %d"), *HttpResponse->GetContentAsString(), HttpResponse->GetResponseCode());
 
 	AnalyticsModels::FSendEventResponse OutResult;
 	FTDKCppError ErrorResult;

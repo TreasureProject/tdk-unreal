@@ -22,6 +22,7 @@ public class TDKCommon : ModuleRules
                 "HTTP",
                 "Json",
                 "JsonUtilities",
+                "ApplicationCore"
             }
         );
 
